@@ -212,6 +212,21 @@
     .notification {
       animation: slideUp 0.5s ease-out;
     }
+
+    .modal-backdrop {
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .modal-content {
+      animation: slideUp 0.5s ease-out;
+    }
+
+    .admin-panel {
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+    }
     
     @media (max-width: 768px) {
       .whatsapp-float {
@@ -227,98 +242,589 @@
   <div id="root"></div>
 
   <script type="text/babel">
-    const WHATSAPP_NUMBER = "33764542797"; // Format international pour la France
-    
-    // Updated Product Data with Algerian dishes
-    const products = [
-      {
-        id: 1,
-        name: 'Couscous Royal',
-        category: 'plat',
-        price: 15.99,
-        image: 'https://images.pexels.com/photos/6419720/pexels-photo-6419720.jpeg',
-        description: 'Couscous traditionnel avec légumes et viandes',
-        details: 'Semoule fine accompagnée de légumes du soleil, merguez, poulet et agneau, servie avec sa sauce parfumée.'
-      },
-      {
-        id: 2,
-        name: 'Tajine Zitoune',
-        category: 'plat',
-        price: 14.99,
-        image: 'https://images.pexels.com/photos/6419736/pexels-photo-6419736.jpeg',
-        description: 'Tajine au poulet et olives vertes',
-        details: 'Poulet mijoté dans une sauce onctueuse aux olives vertes et citrons confits, épices traditionnelles algériennes.'
-      },
-      {
-        id: 3,
-        name: 'Chorba Frik',
-        category: 'plat',
-        price: 8.99,
-        image: 'https://images.pexels.com/photos/6419754/pexels-photo-6419754.jpeg',
-        description: 'Soupe traditionnelle au blé vert concassé',
-        details: 'Soupe réconfortante à base de frik, viande d\'agneau, pois chiches et coriandre fraîche.'
-      },
-      {
-        id: 4,
-        name: 'Makroud',
-        category: 'patisserie',
-        price: 12.99,
-        image: 'https://images.pexels.com/photos/4109998/pexels-photo-4109998.jpeg',
-        description: 'Pâtisserie aux dattes et miel',
-        details: 'Losanges de semoule fourrés aux dattes, frits et enrobés de miel parfumé à la fleur d\'oranger.'
-      },
-      {
-        id: 5,
-        name: 'Baklawa Algéroise',
-        category: 'patisserie',
-        price: 14.99,
-        image: 'https://images.pexels.com/photos/8963420/pexels-photo-8963420.jpeg',
-        description: 'Feuilleté aux amandes et miel',
-        details: 'Fines feuilles de pâte phyllo garnies d\'amandes concassées, nappées de miel et d\'eau de fleur d\'oranger.'
-      },
-      {
-        id: 6,
-        name: 'Kalb el Louz',
-        category: 'patisserie',
-        price: 10.99,
-        image: 'https://images.pexels.com/photos/7474264/pexels-photo-7474264.jpeg',
-        description: 'Gâteau de semoule aux amandes',
-        details: 'Gâteau moelleux à la semoule fine et aux amandes, parfumé à l\'eau de rose et garni d\'amandes effilées.'
-      },
-      {
-        id: 7,
-        name: 'Thé à la Menthe',
-        category: 'boisson',
-        price: 3.99,
-        image: 'https://images.pexels.com/photos/5946623/pexels-photo-5946623.jpeg',
-        description: 'Thé vert traditionnel à la menthe fraîche',
-        details: 'Thé vert gunpowder infusé avec de la menthe fraîche et du sucre, servi dans un verre traditionnel.'
-      },
-      {
-        id: 8,
-        name: 'Jus d\'Orange Pressé',
-        category: 'boisson',
-        price: 4.99,
-        image: 'https://images.pexels.com/photos/3679973/pexels-photo-3679973.jpeg',
-        description: 'Oranges fraîches pressées à la commande',
-        details: 'Jus d\'oranges fraîchement pressées, sans sucre ajouté, riche en vitamine C.'
-      },
-      {
-        id: 9,
-        name: 'Lben',
-        category: 'boisson',
-        price: 3.50,
-        image: 'https://images.pexels.com/photos/8845759/pexels-photo-8845759.jpeg',
-        description: 'Lait fermenté traditionnel',
-        details: 'Boisson lactée fermentée traditionnelle, rafraîchissante et légèrement salée.'
+    // Storage Manager pour gérer localStorage et préparer Firebase
+    class StorageManager {
+      constructor() {
+        this.storageKey = 'faitMaison_data';
+        this.configKey = 'faitMaison_config';
       }
-    ];
+
+      // Récupérer les données
+      getData() {
+        try {
+          const data = localStorage.getItem(this.storageKey);
+          return data ? JSON.parse(data) : null;
+        } catch (error) {
+          console.error('Erreur lors de la récupération des données:', error);
+          return null;
+        }
+      }
+
+      // Sauvegarder les données
+      setData(data) {
+        try {
+          localStorage.setItem(this.storageKey, JSON.stringify(data));
+          return true;
+        } catch (error) {
+          console.error('Erreur lors de la sauvegarde des données:', error);
+          return false;
+        }
+      }
+
+      // Récupérer la configuration
+      getConfig() {
+        try {
+          const config = localStorage.getItem(this.configKey);
+          return config ? JSON.parse(config) : null;
+        } catch (error) {
+          console.error('Erreur lors de la récupération de la configuration:', error);
+          return null;
+        }
+      }
+
+      // Sauvegarder la configuration
+      setConfig(config) {
+        try {
+          localStorage.setItem(this.configKey, JSON.stringify(config));
+          return true;
+        } catch (error) {
+          console.error('Erreur lors de la sauvegarde de la configuration:', error);
+          return false;
+        }
+      }
+
+      // Préparer pour Firebase (placeholder pour future intégration)
+      async syncToFirebase(data) {
+        // Cette fonction sera implémentée lors de l'intégration Firebase
+        console.log('Firebase sync préparé pour:', data);
+        // return firebase.firestore().collection('siteData').doc('main').set(data);
+      }
+    }
+
+    const storage = new StorageManager();
+
+    // Configuration par défaut
+    const defaultConfig = {
+      headerColor: 'from-purple-600 to-pink-600',
+      buttonColor: 'from-purple-500 to-pink-500',
+      whatsappNumber: '33764542797'
+    };
+
+    // Données par défaut
+    const defaultData = {
+      siteTitle: 'Fait Maison',
+      siteSubtitle: 'Cuisine Algérienne Authentique',
+      heroTitle: "Saveurs d'Algérie",
+      heroDescription: "Découvrez l'authenticité de la cuisine algérienne, préparée avec passion et tradition",
+      products: [
+        {
+          id: 1,
+          name: 'Couscous Royal',
+          category: 'plat',
+          price: 15.99,
+          image: 'https://images.pexels.com/photos/6419720/pexels-photo-6419720.jpeg',
+          description: 'Couscous traditionnel avec légumes et viandes',
+          details: 'Semoule fine accompagnée de légumes du soleil, merguez, poulet et agneau, servie avec sa sauce parfumée.'
+        },
+        {
+          id: 2,
+          name: 'Tajine Zitoune',
+          category: 'plat',
+          price: 14.99,
+          image: 'https://images.pexels.com/photos/6419736/pexels-photo-6419736.jpeg',
+          description: 'Tajine au poulet et olives vertes',
+          details: 'Poulet mijoté dans une sauce onctueuse aux olives vertes et citrons confits, épices traditionnelles algériennes.'
+        },
+        {
+          id: 3,
+          name: 'Chorba Frik',
+          category: 'plat',
+          price: 8.99,
+          image: 'https://images.pexels.com/photos/6419754/pexels-photo-6419754.jpeg',
+          description: 'Soupe traditionnelle au blé vert concassé',
+          details: 'Soupe réconfortante à base de frik, viande d\'agneau, pois chiches et coriandre fraîche.'
+        },
+        {
+          id: 4,
+          name: 'Makroud',
+          category: 'patisserie',
+          price: 12.99,
+          image: 'https://images.pexels.com/photos/4109998/pexels-photo-4109998.jpeg',
+          description: 'Pâtisserie aux dattes et miel',
+          details: 'Losanges de semoule fourrés aux dattes, frits et enrobés de miel parfumé à la fleur d\'oranger.'
+        },
+        {
+          id: 5,
+          name: 'Baklawa Algéroise',
+          category: 'patisserie',
+          price: 14.99,
+          image: 'https://images.pexels.com/photos/8963420/pexels-photo-8963420.jpeg',
+          description: 'Feuilleté aux amandes et miel',
+          details: 'Fines feuilles de pâte phyllo garnies d\'amandes concassées, nappées de miel et d\'eau de fleur d\'oranger.'
+        },
+        {
+          id: 6,
+          name: 'Kalb el Louz',
+          category: 'patisserie',
+          price: 10.99,
+          image: 'https://images.pexels.com/photos/7474264/pexels-photo-7474264.jpeg',
+          description: 'Gâteau de semoule aux amandes',
+          details: 'Gâteau moelleux à la semoule fine et aux amandes, parfumé à l\'eau de rose et garni d\'amandes effilées.'
+        },
+        {
+          id: 7,
+          name: 'Thé à la Menthe',
+          category: 'boisson',
+          price: 3.99,
+          image: 'https://images.pexels.com/photos/5946623/pexels-photo-5946623.jpeg',
+          description: 'Thé vert traditionnel à la menthe fraîche',
+          details: 'Thé vert gunpowder infusé avec de la menthe fraîche et du sucre, servi dans un verre traditionnel.'
+        },
+        {
+          id: 8,
+          name: 'Jus d\'Orange Pressé',
+          category: 'boisson',
+          price: 4.99,
+          image: 'https://images.pexels.com/photos/3679973/pexels-photo-3679973.jpeg',
+          description: 'Oranges fraîches pressées à la commande',
+          details: 'Jus d\'oranges fraîchement pressées, sans sucre ajouté, riche en vitamine C.'
+        },
+        {
+          id: 9,
+          name: 'Lben',
+          category: 'boisson',
+          price: 3.50,
+          image: 'https://images.pexels.com/photos/8845759/pexels-photo-8845759.jpeg',
+          description: 'Lait fermenté traditionnel',
+          details: 'Boisson lactée fermentée traditionnelle, rafraîchissante et légèrement salée.'
+        }
+      ]
+    };
+
+    // Modal de connexion Admin
+    const AdminLoginModal = ({ isOpen, onClose, onLogin }) => {
+      const [password, setPassword] = React.useState('');
+      const [error, setError] = React.useState(false);
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        if (password === 'nawel123') {
+          onLogin();
+          setPassword('');
+          setError(false);
+        } else {
+          setError(true);
+        }
+      };
+
+      if (!isOpen) return null;
+
+      return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full modal-content">
+            <div className="p-6">
+              <h2 className="text-2xl font-serif font-bold mb-4">Connexion Admin</h2>
+              <form onSubmit={handleSubmit}>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Mot de passe"
+                  className="w-full px-4 py-3 border rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  autoFocus
+                />
+                {error && (
+                  <p className="text-red-500 text-sm mb-4">Mot de passe incorrect</p>
+                )}
+                <div className="flex gap-3">
+                  <button
+                    type="submit"
+                    className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-lg font-medium hover:shadow-lg transition-all"
+                  >
+                    Se connecter
+                  </button>
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="flex-1 bg-gray-200 text-gray-800 py-3 rounded-lg font-medium hover:bg-gray-300 transition-all"
+                  >
+                    Annuler
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // Panneau d'administration
+    const AdminPanel = ({ isOpen, onClose, siteData, setSiteData, config, setConfig }) => {
+      const [activeTab, setActiveTab] = React.useState('products');
+      const [editingProduct, setEditingProduct] = React.useState(null);
+      const [newProduct, setNewProduct] = React.useState({
+        name: '',
+        category: 'plat',
+        price: '',
+        image: '',
+        description: '',
+        details: ''
+      });
+
+      if (!isOpen) return null;
+
+      const handleSave = () => {
+        storage.setData(siteData);
+        storage.setConfig(config);
+        alert('Modifications sauvegardées !');
+      };
+
+      const handleAddProduct = () => {
+        const product = {
+          ...newProduct,
+          id: Date.now(),
+          price: parseFloat(newProduct.price)
+        };
+        setSiteData(prev => ({
+          ...prev,
+          products: [...prev.products, product]
+        }));
+        setNewProduct({
+          name: '',
+          category: 'plat',
+          price: '',
+          image: '',
+          description: '',
+          details: ''
+        });
+      };
+
+      const handleUpdateProduct = (productId, updates) => {
+        setSiteData(prev => ({
+          ...prev,
+          products: prev.products.map(p => 
+            p.id === productId ? { ...p, ...updates } : p
+          )
+        }));
+      };
+
+      const handleDeleteProduct = (productId) => {
+        if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
+          setSiteData(prev => ({
+            ...prev,
+            products: prev.products.filter(p => p.id !== productId)
+          }));
+        }
+      };
+
+      return (
+        <div className="fixed inset-0 z-50 overflow-hidden">
+          <div className="absolute inset-0 bg-black/50 backdrop-blur" onClick={onClose} />
+          
+          <div className="absolute right-0 top-0 h-full w-full md:w-3/4 lg:w-2/3 bg-white shadow-2xl overflow-y-auto admin-panel">
+            <div className="sticky top-0 bg-white border-b z-10">
+              <div className="flex justify-between items-center p-4">
+                <h2 className="text-2xl font-serif font-bold">Dashboard Admin</h2>
+                <div className="flex gap-3">
+                  <button
+                    onClick={handleSave}
+                    className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors"
+                  >
+                    💾 Sauvegarder
+                  </button>
+                  <button
+                    onClick={onClose}
+                    className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex gap-4 px-4 pb-4 overflow-x-auto">
+                <button
+                  onClick={() => setActiveTab('general')}
+                  className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
+                    activeTab === 'general' 
+                      ? 'bg-purple-500 text-white' 
+                      : 'bg-gray-100 hover:bg-gray-200'
+                  }`}
+                >
+                  ⚙️ Général
+                </button>
+                <button
+                  onClick={() => setActiveTab('products')}
+                  className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
+                    activeTab === 'products' 
+                      ? 'bg-purple-500 text-white' 
+                      : 'bg-gray-100 hover:bg-gray-200'
+                  }`}
+                >
+                  🍽️ Produits
+                </button>
+                <button
+                  onClick={() => setActiveTab('colors')}
+                  className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
+                    activeTab === 'colors' 
+                      ? 'bg-purple-500 text-white' 
+                      : 'bg-gray-100 hover:bg-gray-200'
+                  }`}
+                >
+                  🎨 Couleurs
+                </button>
+              </div>
+            </div>
+
+            <div className="p-6">
+              {/* Onglet Général */}
+              {activeTab === 'general' && (
+                <div className="space-y-6">
+                  <h3 className="text-xl font-semibold mb-4">Paramètres généraux</h3>
+                  
+                  <div>
+                    <label className="block mb-2 font-medium">Titre du site</label>
+                    <input
+                      type="text"
+                      value={siteData.siteTitle}
+                      onChange={(e) => setSiteData(prev => ({ ...prev, siteTitle: e.target.value }))}
+                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block mb-2 font-medium">Sous-titre du site</label>
+                    <input
+                      type="text"
+                      value={siteData.siteSubtitle}
+                      onChange={(e) => setSiteData(prev => ({ ...prev, siteSubtitle: e.target.value }))}
+                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block mb-2 font-medium">Titre Hero</label>
+                    <input
+                      type="text"
+                      value={siteData.heroTitle}
+                      onChange={(e) => setSiteData(prev => ({ ...prev, heroTitle: e.target.value }))}
+                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block mb-2 font-medium">Description Hero</label>
+                    <textarea
+                      value={siteData.heroDescription}
+                      onChange={(e) => setSiteData(prev => ({ ...prev, heroDescription: e.target.value }))}
+                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      rows="3"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block mb-2 font-medium">Numéro WhatsApp</label>
+                    <input
+                      type="text"
+                      value={config.whatsappNumber}
+                      onChange={(e) => setConfig(prev => ({ ...prev, whatsappNumber: e.target.value }))}
+                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      placeholder="Format: 33764542797"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Onglet Produits */}
+              {activeTab === 'products' && (
+                <div className="space-y-6">
+                  <div className="bg-gray-50 p-6 rounded-lg">
+                    <h3 className="text-xl font-semibold mb-4">Ajouter un produit</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <input
+                        type="text"
+                        placeholder="Nom du produit"
+                        value={newProduct.name}
+                        onChange={(e) => setNewProduct(prev => ({ ...prev, name: e.target.value }))}
+                        className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      />
+                      <select
+                        value={newProduct.category}
+                        onChange={(e) => setNewProduct(prev => ({ ...prev, category: e.target.value }))}
+                        className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      >
+                        <option value="plat">Plat</option>
+                        <option value="patisserie">Pâtisserie</option>
+                        <option value="boisson">Boisson</option>
+                      </select>
+                      <input
+                        type="number"
+                        step="0.01"
+                        placeholder="Prix"
+                        value={newProduct.price}
+                        onChange={(e) => setNewProduct(prev => ({ ...prev, price: e.target.value }))}
+                        className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      />
+                      <input
+                        type="url"
+                        placeholder="URL de l'image"
+                        value={newProduct.image}
+                        onChange={(e) => setNewProduct(prev => ({ ...prev, image: e.target.value }))}
+                        className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Description courte"
+                        value={newProduct.description}
+                        onChange={(e) => setNewProduct(prev => ({ ...prev, description: e.target.value }))}
+                        className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 md:col-span-2"
+                      />
+                      <textarea
+                        placeholder="Détails du produit"
+                        value={newProduct.details}
+                        onChange={(e) => setNewProduct(prev => ({ ...prev, details: e.target.value }))}
+                        className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 md:col-span-2"
+                        rows="3"
+                      />
+                    </div>
+                    <button
+                      onClick={handleAddProduct}
+                      disabled={!newProduct.name || !newProduct.price}
+                      className="mt-4 bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    >
+                      ➕ Ajouter le produit
+                    </button>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl font-semibold mb-4">Liste des produits</h3>
+                    <div className="space-y-4">
+                      {siteData.products.map(product => (
+                        <div key={product.id} className="bg-white border rounded-lg p-4 shadow-sm">
+                          {editingProduct === product.id ? (
+                            <div className="space-y-3">
+                              <input
+                                type="text"
+                                value={product.name}
+                                onChange={(e) => handleUpdateProduct(product.id, { name: e.target.value })}
+                                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                              />
+                              <input
+                                type="number"
+                                step="0.01"
+                                value={product.price}
+                                onChange={(e) => handleUpdateProduct(product.id, { price: parseFloat(e.target.value) })}
+                                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                              />
+                              <textarea
+                                value={product.description}
+                                onChange={(e) => handleUpdateProduct(product.id, { description: e.target.value })}
+                                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                rows="2"
+                              />
+                              <div className="flex gap-2">
+                                <button
+                                  onClick={() => setEditingProduct(null)}
+                                  className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                                >
+                                  ✓ Valider
+                                </button>
+                                <button
+                                  onClick={() => setEditingProduct(null)}
+                                  className="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400"
+                                >
+                                  ✕ Annuler
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <h4 className="font-semibold">{product.name}</h4>
+                                <p className="text-gray-600">{product.description}</p>
+                                <p className="text-purple-600 font-bold">{product.price.toFixed(2)} €</p>
+                              </div>
+                              <div className="flex gap-2">
+                                <button
+                                  onClick={() => setEditingProduct(product.id)}
+                                  className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                                >
+                                  ✏️
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteProduct(product.id)}
+                                  className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                                >
+                                  🗑️
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Onglet Couleurs */}
+              {activeTab === 'colors' && (
+                <div className="space-y-6">
+                  <h3 className="text-xl font-semibold mb-4">Personnalisation des couleurs</h3>
+                  
+                  <div>
+                    <label className="block mb-2 font-medium">Couleur du header</label>
+                    <select
+                      value={config.headerColor}
+                      onChange={(e) => setConfig(prev => ({ ...prev, headerColor: e.target.value }))}
+                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    >
+                      <option value="from-purple-600 to-pink-600">Violet → Rose (défaut)</option>
+                      <option value="from-blue-600 to-indigo-600">Bleu → Indigo</option>
+                      <option value="from-green-600 to-teal-600">Vert → Turquoise</option>
+                      <option value="from-red-600 to-orange-600">Rouge → Orange</option>
+                      <option value="from-gray-700 to-gray-900">Gris foncé → Noir</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block mb-2 font-medium">Couleur des boutons</label>
+                    <select
+                      value={config.buttonColor}
+                      onChange={(e) => setConfig(prev => ({ ...prev, buttonColor: e.target.value }))}
+                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    >
+                      <option value="from-purple-500 to-pink-500">Violet → Rose (défaut)</option>
+                      <option value="from-blue-500 to-indigo-500">Bleu → Indigo</option>
+                      <option value="from-green-500 to-teal-500">Vert → Turquoise</option>
+                      <option value="from-red-500 to-orange-500">Rouge → Orange</option>
+                      <option value="from-gray-600 to-gray-800">Gris → Gris foncé</option>
+                    </select>
+                  </div>
+
+                  <div className="bg-gray-100 p-4 rounded-lg">
+                    <h4 className="font-medium mb-2">Aperçu</h4>
+                    <div className="space-y-3">
+                      <div className={`bg-gradient-to-r ${config.headerColor} text-white p-4 rounded-lg`}>
+                        Header - Aperçu de la couleur
+                      </div>
+                      <button className={`bg-gradient-to-r ${config.buttonColor} text-white px-6 py-2 rounded-full`}>
+                        Bouton - Aperçu de la couleur
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    };
 
     // WhatsApp Button Component
-    const WhatsAppButton = () => {
+    const WhatsAppButton = ({ whatsappNumber }) => {
       const handleWhatsAppClick = () => {
         const message = "Bonjour, je souhaite avoir des informations sur vos plats.";
-        const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
       };
 
@@ -335,27 +841,30 @@
       );
     };
 
-    // Updated Header Component
-    const Header = ({ cartItemCount, toggleCart }) => (
+    // Header Component avec gestion des clics
+    const Header = ({ cartItemCount, toggleCart, siteData, config, onTitleClick }) => (
       <header className="glass-effect sticky top-0 z-40 shadow-lg">
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+            <div 
+              className="flex items-center space-x-3 cursor-pointer select-none"
+              onClick={onTitleClick}
+            >
+              <div className={`w-12 h-12 bg-gradient-to-br ${config.buttonColor} rounded-full flex items-center justify-center`}>
                 <span className="text-white font-bold text-xl">FM</span>
               </div>
               <div>
-                <h1 className="text-2xl md:text-3xl font-serif font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                  Fait Maison
+                <h1 className={`text-2xl md:text-3xl font-serif font-bold bg-gradient-to-r ${config.headerColor} bg-clip-text text-transparent`}>
+                  {siteData.siteTitle}
                 </h1>
-                <p className="text-xs text-gray-600">Cuisine Algérienne Authentique</p>
+                <p className="text-xs text-gray-600">{siteData.siteSubtitle}</p>
               </div>
             </div>
             <button 
               onClick={toggleCart}
               className="relative group"
             >
-              <div className="flex items-center space-x-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full transition-all duration-300 group-hover:shadow-lg group-hover:scale-105">
+              <div className={`flex items-center space-x-2 bg-gradient-to-r ${config.buttonColor} text-white px-4 py-2 rounded-full transition-all duration-300 group-hover:shadow-lg group-hover:scale-105`}>
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                 </svg>
@@ -372,7 +881,7 @@
       </header>
     );
 
-    // Updated CategoryNav Component
+    // CategoryNav Component
     const CategoryNav = ({ activeCategory, setActiveCategory }) => {
       const categories = [
         { id: 'all', name: 'Tous', icon: '🍽️' },
@@ -405,8 +914,8 @@
       );
     };
 
-    // Updated ProductCard Component
-    const ProductCard = ({ product, addToCart }) => {
+    // ProductCard Component
+    const ProductCard = ({ product, addToCart, config }) => {
       const [isAdded, setIsAdded] = React.useState(false);
 
       const handleAddToCart = () => {
@@ -434,12 +943,12 @@
             <h3 className="text-xl font-serif font-bold mb-2 text-gray-800">{product.name}</h3>
             <p className="text-gray-600 mb-4 text-sm">{product.description}</p>
             <div className="flex justify-between items-center">
-              <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <span className={`text-2xl font-bold bg-gradient-to-r ${config.headerColor} bg-clip-text text-transparent`}>
                 {product.price.toFixed(2)} €
               </span>
               <button
                 onClick={handleAddToCart}
-                className="btn-primary text-white px-6 py-2 rounded-full font-medium"
+                className={`btn-primary bg-gradient-to-r ${config.buttonColor} text-white px-6 py-2 rounded-full font-medium`}
               >
                 Ajouter
               </button>
@@ -449,15 +958,15 @@
       );
     };
 
-    // Updated Hero Section
-    const HeroSection = () => (
-      <section className="hero-gradient text-white py-24 px-4">
+    // HeroSection Component
+    const HeroSection = ({ siteData, config }) => (
+      <section className={`hero-gradient bg-gradient-to-br ${config.headerColor} text-white py-24 px-4`}>
         <div className="container mx-auto text-center">
           <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6 animate-fade-in">
-            Saveurs d'Algérie
+            {siteData.heroTitle}
           </h1>
           <p className="text-xl md:text-2xl max-w-3xl mx-auto mb-8 opacity-90 animate-slide-up">
-            Découvrez l'authenticité de la cuisine algérienne, préparée avec passion et tradition
+            {siteData.heroDescription}
           </p>
           <div className="flex flex-wrap gap-4 justify-center animate-bounce-in">
             <div className="bg-white/20 backdrop-blur-sm rounded-full px-6 py-3">
@@ -474,8 +983,8 @@
       </section>
     );
 
-    // Updated Cart Component with WhatsApp integration
-    const Cart = ({ items, updateQuantity, removeItem, total, isOpen, toggleCart }) => {
+    // Cart Component
+    const Cart = ({ items, updateQuantity, removeItem, total, isOpen, toggleCart, whatsappNumber }) => {
       const sendWhatsAppOrder = () => {
         let message = "🛒 *Nouvelle Commande*\n\n";
         items.forEach(item => {
@@ -484,7 +993,7 @@
         message += `\n*Total: ${total.toFixed(2)}€*\n\n`;
         message += "Merci de confirmer la disponibilité et le délai de livraison.";
         
-        const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
       };
 
@@ -583,7 +1092,7 @@
       );
     };
 
-    // Updated Footer Component
+    // Footer Component
     const Footer = () => (
       <footer className="bg-gradient-to-br from-gray-800 to-gray-900 text-white py-12">
         <div className="container mx-auto px-4">
@@ -644,6 +1153,44 @@
       const [cartItems, setCartItems] = React.useState([]);
       const [isCartOpen, setIsCartOpen] = React.useState(false);
       const [notification, setNotification] = React.useState(null);
+      const [titleClickCount, setTitleClickCount] = React.useState(0);
+      const [isLoginModalOpen, setIsLoginModalOpen] = React.useState(false);
+      const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+      const [isAdminPanelOpen, setIsAdminPanelOpen] = React.useState(false);
+      
+      // Charger les données depuis localStorage ou utiliser les données par défaut
+      const [siteData, setSiteData] = React.useState(() => {
+        const savedData = storage.getData();
+        return savedData || defaultData;
+      });
+      
+      const [config, setConfig] = React.useState(() => {
+        const savedConfig = storage.getConfig();
+        return savedConfig || defaultConfig;
+      });
+
+      // Gérer les clics sur le titre
+      const handleTitleClick = () => {
+        setTitleClickCount(prev => {
+          const newCount = prev + 1;
+          if (newCount === 3) {
+            setIsLoginModalOpen(true);
+            return 0;
+          }
+          return newCount;
+        });
+
+        // Réinitialiser le compteur après 2 secondes
+        setTimeout(() => {
+          setTitleClickCount(0);
+        }, 2000);
+      };
+
+      const handleLogin = () => {
+        setIsAuthenticated(true);
+        setIsLoginModalOpen(false);
+        setIsAdminPanelOpen(true);
+      };
 
       const addToCart = (product) => {
         setCartItems(prevItems => {
@@ -692,17 +1239,20 @@
       );
 
       const filteredProducts = activeCategory === 'all'
-        ? products
-        : products.filter(product => product.category === activeCategory);
+        ? siteData.products
+        : siteData.products.filter(product => product.category === activeCategory);
 
       return (
         <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50">
           <Header 
             cartItemCount={cartItems.reduce((count, item) => count + item.quantity, 0)} 
-            toggleCart={toggleCart} 
+            toggleCart={toggleCart}
+            siteData={siteData}
+            config={config}
+            onTitleClick={handleTitleClick}
           />
           
-          <HeroSection />
+          <HeroSection siteData={siteData} config={config} />
           
           <CategoryNav activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
           
@@ -722,6 +1272,7 @@
                   <ProductCard
                     product={product}
                     addToCart={addToCart}
+                    config={config}
                   />
                 </div>
               ))}
@@ -735,9 +1286,35 @@
             total={cartTotal}
             isOpen={isCartOpen}
             toggleCart={toggleCart}
+            whatsappNumber={config.whatsappNumber}
           />
 
-          <WhatsAppButton />
+          <WhatsAppButton whatsappNumber={config.whatsappNumber} />
+
+          <AdminLoginModal
+            isOpen={isLoginModalOpen}
+            onClose={() => setIsLoginModalOpen(false)}
+            onLogin={handleLogin}
+          />
+
+          <AdminPanel
+            isOpen={isAdminPanelOpen && isAuthenticated}
+            onClose={() => setIsAdminPanelOpen(false)}
+            siteData={siteData}
+            setSiteData={setSiteData}
+            config={config}
+            setConfig={setConfig}
+          />
+
+          {isAuthenticated && (
+            <button
+              onClick={() => setIsAdminPanelOpen(true)}
+              className="fixed bottom-24 right-6 bg-purple-600 text-white p-3 rounded-full shadow-lg hover:bg-purple-700 transition-colors"
+              title="Ouvrir le panneau admin"
+            >
+              ⚙️
+            </button>
+          )}
 
           <Footer />
         </div>
