@@ -2,763 +2,240 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Algerie - Terre de Beaute et de Saveurs</title>
     <meta name="description" content="Decouvrez l'Algerie, ses villes magnifiques, ses plats traditionnels et sa culture riche.">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            overflow-x: hidden;
-            background: #000;
-            color: #fff;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; overflow-x: hidden; background: #000; color: #fff; line-height: 1.6; }
 
         /* Navigation */
         nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            padding: 30px 60px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s ease;
-            background: rgba(0, 0, 0, 0);
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            padding: 25px 50px; display: flex; justify-content: space-between; align-items: center;
+            transition: all 0.4s ease; background: transparent;
         }
+        nav.scrolled { background: rgba(0, 100, 60, 0.95); padding: 18px 50px; backdrop-filter: blur(15px); }
+        .logo { font-size: 26px; font-weight: 700; letter-spacing: 4px; background: linear-gradient(135deg, #00a86b, #fff, #d52b1e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .nav-links { display: flex; gap: 35px; list-style: none; }
+        .nav-links a { color: #fff; text-decoration: none; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; position: relative; transition: opacity 0.3s; font-weight: 500; }
+        .nav-links a:hover { opacity: 0.7; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, #00a86b, #d52b1e); transition: width 0.3s; }
+        .nav-links a:hover::after { width: 100%; }
 
-        nav.scrolled {
-            background: rgba(0, 100, 60, 0.95);
-            padding: 20px 60px;
-            backdrop-filter: blur(10px);
-        }
-
-        .logo {
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: 3px;
-            z-index: 1001;
-            background: linear-gradient(135deg, #00a86b, #fff, #d52b1e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 40px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 14px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            position: relative;
-            transition: opacity 0.3s;
-        }
-
-        .nav-links a:hover {
-            opacity: 0.7;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #00a86b, #d52b1e);
-            transition: width 0.3s;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Menu Burger */
-        .burger-menu {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            z-index: 1001;
-            width: 30px;
-            height: 24px;
-            position: relative;
-        }
-
-        .burger-menu span {
-            width: 100%;
-            height: 2px;
-            background: #fff;
-            transition: all 0.3s ease;
-            position: absolute;
-            left: 0;
-        }
-
+        /* Burger Menu */
+        .burger-menu { display: none; flex-direction: column; cursor: pointer; z-index: 1001; width: 28px; height: 22px; position: relative; }
+        .burger-menu span { width: 100%; height: 2px; background: #fff; transition: all 0.3s ease; position: absolute; left: 0; border-radius: 2px; }
         .burger-menu span:nth-child(1) { top: 0; }
         .burger-menu span:nth-child(2) { top: 50%; transform: translateY(-50%); }
         .burger-menu span:nth-child(3) { bottom: 0; }
-
         .burger-menu.active span:nth-child(1) { top: 50%; transform: translateY(-50%) rotate(45deg); }
         .burger-menu.active span:nth-child(2) { opacity: 0; }
         .burger-menu.active span:nth-child(3) { bottom: 50%; transform: translateY(50%) rotate(-45deg); }
 
-        /* Section de base */
-        section {
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
+        /* Sections */
+        section { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
 
-        /* Hero Section - Parallax Vertical */
-        #hero {
-            height: 120vh;
-        }
+        /* Hero */
+        #hero { height: 100vh; }
+        .parallax-bg { position: absolute; top: -10%; left: 0; width: 100%; height: 120%; background-size: cover; background-position: center; will-change: transform; }
+        #hero .parallax-bg { background-image: url('https://images.unsplash.com/photo-1553913861-c0a602e5c tried?w=1920&q=80'); background-color: #1a3a2a; }
+        .parallax-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(0, 100, 60, 0.65) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(180, 40, 30, 0.4) 100%); }
 
-        .parallax-bg {
-            position: absolute;
-            top: -20%;
-            left: 0;
-            width: 100%;
-            height: 140%;
-            background-image: url('https://images.unsplash.com/photo-1583425921686-c5daf5f49e0a?q=80&w=2000');
-            background-size: cover;
-            background-position: center;
-            will-change: transform;
-        }
+        .hero-content { position: relative; z-index: 10; text-align: center; padding: 20px; max-width: 1000px; }
+        .hero-content h1 { font-size: clamp(42px, 10vw, 120px); font-weight: 200; letter-spacing: clamp(5px, 2vw, 15px); margin-bottom: 25px; opacity: 0; animation: fadeInUp 1s ease forwards; }
+        .hero-content p { font-size: clamp(14px, 2.5vw, 22px); font-weight: 300; letter-spacing: 2px; opacity: 0; animation: fadeInUp 1s ease 0.3s forwards; margin-bottom: 45px; }
+        .hero-cta { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; opacity: 0; animation: fadeInUp 1s ease 0.6s forwards; }
 
-        .parallax-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(0, 100, 60, 0.6) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(200, 40, 30, 0.4) 100%);
-        }
+        .btn { padding: 16px 40px; font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; border-radius: 50px; text-decoration: none; transition: all 0.4s ease; cursor: pointer; }
+        .btn-primary { background: linear-gradient(135deg, #00a86b, #006644); color: #fff; border: none; box-shadow: 0 8px 25px rgba(0, 168, 107, 0.35); }
+        .btn-primary:hover { transform: translateY(-4px); box-shadow: 0 12px 35px rgba(0, 168, 107, 0.5); }
+        .btn-secondary { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.8); }
+        .btn-secondary:hover { background: #fff; color: #006644; transform: translateY(-4px); }
 
-        .hero-content {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .hero-content h1 {
-            font-size: clamp(50px, 8vw, 120px);
-            font-weight: 200;
-            letter-spacing: 10px;
-            margin-bottom: 20px;
-            opacity: 0;
-            animation: fadeInUp 1s ease forwards;
-        }
-
-        .hero-content p {
-            font-size: clamp(16px, 2vw, 24px);
-            font-weight: 300;
-            letter-spacing: 3px;
-            opacity: 0;
-            animation: fadeInUp 1s ease 0.3s forwards;
-            margin-bottom: 40px;
-        }
-
-        .hero-cta {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-            opacity: 0;
-            animation: fadeInUp 1s ease 0.6s forwards;
-        }
-
-        .btn {
-            padding: 18px 45px;
-            font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            border-radius: 50px;
-            text-decoration: none;
-            transition: all 0.4s ease;
-            cursor: pointer;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #00a86b, #006644);
-            color: #fff;
-            border: none;
-            box-shadow: 0 10px 30px rgba(0, 168, 107, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 168, 107, 0.6);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: #fff;
-            border: 2px solid #fff;
-        }
-
-        .btn-secondary:hover {
-            background: #fff;
-            color: #006644;
-            transform: translateY(-5px);
-        }
-
-        @keyframes fadeInUp {
-            to { opacity: 1; transform: translateY(0); }
-            from { opacity: 0; transform: translateY(30px); }
-        }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(35px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Section Title */
-        .section-title {
-            text-align: center;
-            font-size: clamp(40px, 6vw, 80px);
-            font-weight: 200;
-            letter-spacing: 5px;
-            margin-bottom: 80px;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease;
-        }
+        .section-title { text-align: center; font-size: clamp(32px, 6vw, 70px); font-weight: 200; letter-spacing: 4px; margin-bottom: 50px; opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
+        .section-title.visible { opacity: 1; transform: translateY(0); }
 
-        .section-title.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        /* Destinations - Horizontal Scroll */
+        #destinations { background: #0a0a0a; padding: 80px 0; flex-direction: column; }
+        .horizontal-scroll-wrapper { display: flex; gap: 30px; padding: 0 50px; will-change: transform; transition: transform 0.3s ease-out; }
+        .destination-card { min-width: 500px; height: 350px; position: relative; border-radius: 15px; overflow: hidden; cursor: pointer; transition: transform 0.5s ease; flex-shrink: 0; }
+        .destination-card:hover { transform: scale(1.03); }
+        .destination-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .destination-card:hover img { transform: scale(1.1); }
+        .destination-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 30px; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); }
+        .destination-overlay h3 { font-size: 26px; font-weight: 400; letter-spacing: 2px; margin-bottom: 8px; color: #00a86b; }
+        .destination-overlay p { font-size: 14px; letter-spacing: 1px; opacity: 0.85; }
 
-        /* Destinations Section - Parallax Horizontal */
-        #destinations {
-            background: #0a0a0a;
-            padding: 100px 0;
-        }
+        /* About - Depth Parallax */
+        #about { height: 100vh; }
+        .depth-parallax-bg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.4); width: 100%; height: 100%; background-image: url('https://images.unsplash.com/photo-1539768942893-daf53e448371?w=1920&q=80'); background-size: cover; background-position: center; will-change: transform; }
+        .about-content { position: relative; z-index: 10; max-width: 750px; padding: 45px; background: rgba(0, 80, 50, 0.2); backdrop-filter: blur(20px); border: 1px solid rgba(0, 168, 107, 0.25); border-radius: 20px; opacity: 0; transform: translateY(50px); transition: all 1s ease; margin: 20px; }
+        .about-content.visible { opacity: 1; transform: translateY(0); }
+        .about-content h2 { font-size: clamp(28px, 5vw, 45px); font-weight: 200; letter-spacing: 3px; margin-bottom: 25px; color: #00a86b; }
+        .about-content p { font-size: clamp(15px, 2vw, 17px); line-height: 1.9; font-weight: 300; }
 
-        .horizontal-scroll-wrapper {
-            display: flex;
-            gap: 40px;
-            padding: 0 60px;
-            will-change: transform;
-            transition: transform 0.3s ease-out;
-        }
+        /* Gastronomie */
+        #gastronomie { min-height: 100vh; background: #000; padding: 80px 0; flex-direction: column; }
+        .gastro-bg { position: absolute; top: -10%; left: 0; width: 100%; height: 120%; background-image: url('https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=1920&q=80'); background-size: cover; background-position: center; opacity: 0.5; will-change: transform; }
+        .gastro-content { position: relative; z-index: 10; padding: 0 50px; width: 100%; max-width: 1400px; }
+        .dishes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 50px; }
+        .dish-item { background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(0, 168, 107, 0.25); border-radius: 18px; overflow: hidden; transition: all 0.4s ease; opacity: 0; transform: translateY(30px); }
+        .dish-item.visible { opacity: 1; transform: translateY(0); }
+        .dish-item:hover { transform: translateY(-12px); border-color: rgba(0, 168, 107, 0.5); box-shadow: 0 20px 40px rgba(0, 168, 107, 0.15); }
+        .dish-image { width: 100%; height: 220px; overflow: hidden; }
+        .dish-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .dish-item:hover .dish-image img { transform: scale(1.08); }
+        .dish-info { padding: 25px; }
+        .dish-item h3 { font-size: 22px; font-weight: 400; letter-spacing: 1px; margin-bottom: 12px; color: #00a86b; }
+        .dish-item p { font-size: 14px; line-height: 1.7; opacity: 0.85; }
 
-        .destination-card {
-            min-width: 600px;
-            height: 400px;
-            position: relative;
-            border-radius: 15px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.5s ease;
-        }
+        /* Culture */
+        #culture { min-height: 100vh; padding: 80px 50px; flex-direction: column; }
+        .culture-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=1920&q=80'); background-size: cover; background-position: center; will-change: transform; transform: scale(1.15); opacity: 0.4; }
+        .culture-content { position: relative; z-index: 10; max-width: 1200px; width: 100%; }
+        .culture-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; margin-top: 50px; }
+        .culture-item { padding: 35px 25px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 15px; transition: all 0.4s ease; opacity: 0; transform: translateY(30px); text-align: center; }
+        .culture-item.visible { opacity: 1; transform: translateY(0); }
+        .culture-item:hover { transform: translateY(-10px); border-color: rgba(0, 168, 107, 0.4); background: rgba(0, 80, 50, 0.2); }
+        .culture-icon { width: 50px; height: 50px; margin: 0 auto 20px; }
+        .culture-icon svg { width: 100%; height: 100%; stroke: #00a86b; stroke-width: 1.5; fill: none; }
+        .culture-item h3 { font-size: 18px; font-weight: 500; letter-spacing: 1px; margin-bottom: 12px; color: #00a86b; }
+        .culture-item p { font-size: 14px; line-height: 1.7; opacity: 0.8; }
 
-        .destination-card:hover {
-            transform: scale(1.05);
-        }
-
-        .destination-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .destination-card:hover img {
-            transform: scale(1.1);
-        }
-
-        .destination-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 30px;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-        }
-
-        .destination-overlay h3 {
-            font-size: 28px;
-            font-weight: 300;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-            color: #00a86b;
-        }
-
-        .destination-overlay p {
-            font-size: 14px;
-            letter-spacing: 1px;
-            opacity: 0.8;
-        }
-
-        /* About Section - Parallax en Profondeur (Zoom) */
-        #about {
-            position: relative;
-            height: 100vh;
-        }
-
-        .depth-parallax-bg {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(1.5);
-            width: 100%;
-            height: 100%;
-            background-image: url('https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=2560');
-            background-size: cover;
-            background-position: center;
-            will-change: transform;
-            filter: brightness(1.1);
-        }
-
-        .about-content {
-            position: relative;
-            z-index: 10;
-            max-width: 800px;
-            padding: 40px;
-            background: rgba(0, 100, 60, 0.15);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 168, 107, 0.3);
-            border-radius: 20px;
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 1s ease;
-        }
-
-        .about-content.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .about-content h2 {
-            font-size: 48px;
-            font-weight: 200;
-            letter-spacing: 3px;
-            margin-bottom: 30px;
-            color: #00a86b;
-        }
-
-        .about-content p {
-            font-size: 18px;
-            line-height: 1.8;
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
-
-        /* Gastronomie Section */
-        #gastronomie {
-            position: relative;
-            min-height: 100vh;
-            background: #000;
-            overflow: hidden;
-        }
-
-        .gastro-bg {
-            position: absolute;
-            top: -20%;
-            left: 0;
-            width: 100%;
-            height: 140%;
-            background-image: url('https://images.unsplash.com/photo-1585937421612-70a008356fbe?q=80&w=2560');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.6;
-            will-change: transform;
-        }
-
-        .gastro-content {
-            position: relative;
-            z-index: 10;
-            padding: 100px 60px;
-            width: 100%;
-        }
-
-        .dishes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 40px;
-            margin-top: 60px;
-            max-width: 1400px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .dish-item {
-            padding: 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 168, 107, 0.3);
-            border-radius: 20px;
-            transition: all 0.4s ease;
-            opacity: 0;
-            transform: translateY(30px);
-            overflow: hidden;
-        }
-
-        .dish-item.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .dish-item:hover {
-            transform: translateY(-10px);
-            border-color: rgba(0, 168, 107, 0.6);
-            box-shadow: 0 20px 40px rgba(0, 168, 107, 0.2);
-        }
-
-        .dish-image {
-            width: 100%;
-            height: 250px;
-            overflow: hidden;
-        }
-
-        .dish-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .dish-item:hover .dish-image img {
-            transform: scale(1.1);
-        }
-
-        .dish-info {
-            padding: 30px;
-        }
-
-        .dish-item h3 {
-            font-size: 24px;
-            font-weight: 400;
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-            color: #00a86b;
-        }
-
-        .dish-item p {
-            font-size: 16px;
-            line-height: 1.6;
-            opacity: 0.8;
-        }
-
-        /* Culture Section */
-        #culture {
-            position: relative;
-            min-height: 100vh;
-            padding: 100px 60px;
-            text-align: center;
-            overflow: hidden;
-        }
-
-        .culture-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?q=80&w=2560');
-            background-size: cover;
-            background-position: center;
-            will-change: transform;
-            transform: scale(1.2);
-            opacity: 0.5;
-        }
-
-        .culture-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.6) 100%);
-            z-index: 1;
-        }
-
-        .culture-content {
-            position: relative;
-            z-index: 10;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .culture-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 60px;
-        }
-
-        .culture-item {
-            padding: 40px 30px;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            transition: all 0.4s ease;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .culture-item.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .culture-item:hover {
-            transform: translateY(-10px);
-            border-color: rgba(0, 168, 107, 0.5);
-            background: rgba(0, 100, 60, 0.2);
-        }
-
-        .culture-icon {
-            font-size: 50px;
-            margin-bottom: 20px;
-        }
-
-        .culture-item h3 {
-            font-size: 22px;
-            font-weight: 400;
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-            color: #00a86b;
-        }
-
-        .culture-item p {
-            font-size: 15px;
-            line-height: 1.7;
-            opacity: 0.8;
-        }
-
-        /* Sahara Section */
-        #sahara {
-            position: relative;
-            height: 100vh;
-        }
-
-        .sahara-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 120%;
-            background-image: url('https://images.unsplash.com/photo-1509023464722-18d996393ca8?q=80&w=2560');
-            background-size: cover;
-            background-position: center;
-            will-change: transform;
-        }
-
-        .sahara-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent 50%, rgba(0,0,0,0.3));
-        }
-
-        .sahara-content {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            max-width: 900px;
-            padding: 40px;
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 1s ease;
-        }
-
-        .sahara-content.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .sahara-content h2 {
-            font-size: clamp(40px, 6vw, 70px);
-            font-weight: 200;
-            letter-spacing: 5px;
-            margin-bottom: 30px;
-        }
-
-        .sahara-content p {
-            font-size: 20px;
-            line-height: 1.8;
-            letter-spacing: 1px;
-            margin-bottom: 40px;
-        }
+        /* Sahara */
+        #sahara { height: 100vh; }
+        .sahara-bg { position: absolute; top: 0; left: 0; width: 100%; height: 120%; background-image: url('https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=1920&q=80'); background-size: cover; background-position: center; will-change: transform; }
+        .sahara-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0,0,0,0.85), transparent 60%, rgba(0,0,0,0.3)); }
+        .sahara-content { position: relative; z-index: 10; text-align: center; max-width: 850px; padding: 30px; opacity: 0; transform: translateY(50px); transition: all 1s ease; }
+        .sahara-content.visible { opacity: 1; transform: translateY(0); }
+        .sahara-content h2 { font-size: clamp(35px, 7vw, 65px); font-weight: 200; letter-spacing: 5px; margin-bottom: 25px; }
+        .sahara-content p { font-size: clamp(15px, 2vw, 19px); line-height: 1.9; margin-bottom: 35px; }
 
         /* Footer */
-        footer {
-            position: relative;
-            height: 60vh;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        footer { position: relative; height: 50vh; min-height: 350px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .footer-bg { position: absolute; top: 0; left: 0; width: 100%; height: 120%; background-image: url('https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?w=1920&q=80'); background-size: cover; background-position: center; will-change: transform; }
+        .footer-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0,0,0,0.92), transparent); }
+        .footer-content { position: relative; z-index: 10; text-align: center; padding: 30px; }
+        .footer-content .tagline { font-size: clamp(16px, 3vw, 22px); letter-spacing: 4px; margin-bottom: 25px; color: #00a86b; }
+        .footer-content .copyright { font-size: 13px; letter-spacing: 2px; opacity: 0.6; margin-bottom: 20px; }
+        .algerian-flag { display: flex; justify-content: center; gap: 2px; }
+        .flag-stripe { width: 45px; height: 28px; }
+        .flag-green { background: #00a86b; border-radius: 3px 0 0 3px; }
+        .flag-white { background: #fff; display: flex; align-items: center; justify-content: center; }
+        .flag-symbol { color: #d52b1e; font-size: 14px; }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1200px) {
+            .dishes-grid { grid-template-columns: repeat(2, 1fr); }
+            .culture-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
-        .footer-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 120%;
-            background-image: url('https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?q=80&w=2560');
-            background-size: cover;
-            background-position: center;
-            will-change: transform;
-        }
-
-        .footer-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-        }
-
-        .footer-content {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            padding: 40px;
-        }
-
-        .footer-content .tagline {
-            font-size: 24px;
-            letter-spacing: 5px;
-            margin-bottom: 30px;
-            color: #00a86b;
-        }
-
-        .footer-content .copyright {
-            font-size: 14px;
-            letter-spacing: 2px;
-            opacity: 0.6;
-            margin-bottom: 20px;
-        }
-
-        .algerian-flag {
-            display: flex;
-            justify-content: center;
-            gap: 3px;
-            margin-top: 20px;
-        }
-
-        .flag-stripe {
-            width: 50px;
-            height: 30px;
-        }
-
-        .flag-green {
-            background: #00a86b;
-            border-radius: 3px 0 0 3px;
-        }
-
-        .flag-white {
-            background: #fff;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .flag-symbol {
-            color: #d52b1e;
-            font-size: 18px;
-        }
-
-        /* Responsive */
         @media (max-width: 1024px) {
-            nav { padding: 20px 40px; }
-            nav.scrolled { padding: 20px 40px; }
+            nav { padding: 20px 30px; }
+            nav.scrolled { padding: 15px 30px; }
             .burger-menu { display: flex; }
-
             .nav-links {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                height: 100vh;
-                width: 70%;
-                max-width: 400px;
-                background: rgba(0, 100, 60, 0.98);
-                backdrop-filter: blur(20px);
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 40px;
-                transition: right 0.4s ease;
-                padding: 60px 40px;
+                position: fixed; top: 0; right: -100%; height: 100vh; width: 280px;
+                background: rgba(0, 100, 60, 0.98); backdrop-filter: blur(20px);
+                flex-direction: column; justify-content: center; align-items: center;
+                gap: 35px; transition: right 0.4s ease; padding: 50px 30px;
             }
-
             .nav-links.active { right: 0; }
-            .nav-links a { font-size: 18px; letter-spacing: 3px; }
+            .nav-links a { font-size: 16px; letter-spacing: 3px; }
 
-            .destination-card { min-width: 70vw; height: 350px; }
-            .dishes-grid { grid-template-columns: 1fr; gap: 30px; }
+            .destination-card { min-width: 400px; height: 300px; }
+            .horizontal-scroll-wrapper { padding: 0 30px; gap: 20px; }
+            .gastro-content, #culture { padding-left: 30px; padding-right: 30px; }
         }
 
         @media (max-width: 768px) {
             nav { padding: 15px 20px; }
-            .logo { font-size: 22px; }
+            .logo { font-size: 22px; letter-spacing: 3px; }
+            .nav-links { width: 100%; max-width: 300px; }
 
-            .hero-content h1 { font-size: clamp(35px, 12vw, 60px); letter-spacing: 5px; }
-            .hero-cta { flex-direction: column; align-items: center; }
-            .btn { width: 100%; max-width: 280px; text-align: center; }
+            .hero-content { padding: 15px; }
+            .hero-cta { flex-direction: column; align-items: center; gap: 15px; }
+            .btn { width: 100%; max-width: 260px; text-align: center; padding: 14px 30px; }
 
-            .section-title { font-size: clamp(28px, 10vw, 50px); margin-bottom: 40px; }
+            .section-title { font-size: clamp(26px, 8vw, 40px); margin-bottom: 35px; letter-spacing: 2px; }
 
-            #destinations { padding: 60px 0 80px; }
-            .horizontal-scroll-wrapper { padding: 0 20px; gap: 20px; }
-            .destination-card { min-width: 85vw; height: 280px; }
+            #destinations { padding: 60px 0; }
+            .horizontal-scroll-wrapper { padding: 0 20px; gap: 15px; }
+            .destination-card { min-width: 300px; height: 250px; }
+            .destination-overlay { padding: 20px; }
+            .destination-overlay h3 { font-size: 20px; }
+            .destination-overlay p { font-size: 13px; }
 
-            .about-content { max-width: 90%; padding: 25px; margin: 20px; }
-            .about-content h2 { font-size: 28px; }
-            .about-content p { font-size: 15px; }
+            .about-content { padding: 30px 25px; margin: 15px; }
+            .about-content h2 { font-size: 26px; margin-bottom: 20px; }
 
-            .gastro-content { padding: 60px 20px 80px; }
-            .dishes-grid { gap: 25px; margin-top: 40px; }
-            .dish-info { padding: 25px; }
+            #gastronomie { padding: 60px 0; }
+            .gastro-content { padding: 0 20px; }
+            .dishes-grid { grid-template-columns: 1fr; gap: 20px; margin-top: 35px; }
+            .dish-image { height: 200px; }
+            .dish-info { padding: 20px; }
             .dish-item h3 { font-size: 20px; }
 
             #culture { padding: 60px 20px; }
-            .culture-grid { gap: 20px; }
-            .culture-item { padding: 30px 20px; }
+            .culture-grid { grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 35px; }
+            .culture-item { padding: 25px 20px; }
+            .culture-icon { width: 40px; height: 40px; }
+            .culture-item h3 { font-size: 16px; }
+            .culture-item p { font-size: 13px; }
 
             .sahara-content { padding: 20px; }
-            .sahara-content h2 { font-size: clamp(30px, 8vw, 50px); }
-            .sahara-content p { font-size: 16px; }
+            .sahara-content h2 { font-size: clamp(28px, 8vw, 45px); }
+            .sahara-content p { font-size: 15px; }
 
-            footer { height: 50vh; }
-            .footer-content .tagline { font-size: 18px; }
+            footer { height: 45vh; min-height: 300px; }
+            .footer-content .tagline { font-size: 16px; letter-spacing: 3px; }
         }
 
         @media (max-width: 480px) {
-            .destination-card { min-width: 90vw; height: 250px; }
-            .culture-grid { grid-template-columns: 1fr; }
+            nav { padding: 12px 15px; }
+            .logo { font-size: 20px; letter-spacing: 2px; }
+            .burger-menu { width: 24px; height: 18px; }
+
+            .hero-content h1 { letter-spacing: 3px; }
+            .hero-content p { font-size: 13px; letter-spacing: 1px; }
+
+            .destination-card { min-width: 260px; height: 220px; }
+            .destination-overlay h3 { font-size: 18px; }
+
+            .culture-grid { grid-template-columns: 1fr; gap: 12px; }
+            .culture-item { padding: 22px 18px; }
+
+            .flag-stripe { width: 35px; height: 22px; }
+            .flag-symbol { font-size: 12px; }
+        }
+
+        /* Touch devices */
+        @media (hover: none) and (pointer: coarse) {
+            .destination-card:hover { transform: none; }
+            .destination-card:hover img { transform: none; }
+            .dish-item:hover { transform: none; }
+            .culture-item:hover { transform: none; }
+            .btn:hover { transform: none; }
+        }
+
+        /* Landscape mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            #hero { height: 100vh; min-height: 400px; }
+            .hero-content h1 { font-size: 35px; margin-bottom: 15px; }
+            .hero-content p { margin-bottom: 25px; }
+            nav { padding: 10px 20px; }
         }
     </style>
 </head>
 <body>
     <nav id="navbar">
-        <div class="logo">ALGERIE</div>
-        <div class="burger-menu" id="burger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+        <a href="index.html" class="logo">ALGERIE</a>
+        <div class="burger-menu" id="burger"><span></span><span></span><span></span></div>
         <ul class="nav-links" id="navLinks">
             <li><a href="#hero">Accueil</a></li>
             <li><a href="villes.html">Villes</a></li>
@@ -768,13 +245,13 @@
         </ul>
     </nav>
 
-    <!-- Hero Section - Parallax Vertical -->
+    <!-- Hero Section -->
     <section id="hero">
         <div class="parallax-bg"></div>
         <div class="parallax-overlay"></div>
         <div class="hero-content">
             <h1>ALGERIE</h1>
-            <p>Terre de beaute, de saveurs et de traditions milleniaires</p>
+            <p>Terre de beaute, de saveurs et de traditions millénaires</p>
             <div class="hero-cta">
                 <a href="#destinations" class="btn btn-primary">Explorer les Villes</a>
                 <a href="#gastronomie" class="btn btn-secondary">Decouvrir la Cuisine</a>
@@ -782,44 +259,42 @@
         </div>
     </section>
 
-    <!-- Destinations Section - Parallax Horizontal -->
+    <!-- Destinations - Horizontal Parallax -->
     <section id="destinations">
-        <div style="width: 100%;">
-            <h2 class="section-title">Villes Magnifiques</h2>
-            <div class="horizontal-scroll-wrapper">
-                <div class="destination-card">
-                    <img src="https://images.unsplash.com/photo-1572449043416-55f4685c9bb7?q=80&w=800" alt="Alger">
-                    <div class="destination-overlay">
-                        <h3>Alger</h3>
-                        <p>La Blanche - Capitale aux mille facettes surplombant la Mediterranee</p>
-                    </div>
+        <h2 class="section-title">Villes Magnifiques</h2>
+        <div class="horizontal-scroll-wrapper" id="horizontalScroll">
+            <div class="destination-card">
+                <img src="https://images.unsplash.com/photo-1572449043416-55f4685c9bb7?w=800&q=80" alt="Alger">
+                <div class="destination-overlay">
+                    <h3>Alger</h3>
+                    <p>La Blanche - Capitale aux mille facettes surplombant la Mediterranee</p>
                 </div>
-                <div class="destination-card">
-                    <img src="https://images.unsplash.com/photo-1539768942893-daf53e448371?q=80&w=800" alt="Oran">
-                    <div class="destination-overlay">
-                        <h3>Oran</h3>
-                        <p>El Bahia - Berceau du rai et perle de l'ouest algerien</p>
-                    </div>
+            </div>
+            <div class="destination-card">
+                <img src="https://images.unsplash.com/photo-1539768942893-daf53e448371?w=800&q=80" alt="Oran">
+                <div class="destination-overlay">
+                    <h3>Oran</h3>
+                    <p>El Bahia - Perle de l'ouest algerien aux influences mediterraneennes</p>
                 </div>
-                <div class="destination-card">
-                    <img src="https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=800" alt="Constantine">
-                    <div class="destination-overlay">
-                        <h3>Constantine</h3>
-                        <p>Cite des ponts suspendus - Une des plus anciennes villes au monde</p>
-                    </div>
+            </div>
+            <div class="destination-card">
+                <img src="https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80" alt="Constantine">
+                <div class="destination-overlay">
+                    <h3>Constantine</h3>
+                    <p>Cite des ponts suspendus - Une des plus anciennes villes au monde</p>
                 </div>
-                <div class="destination-card">
-                    <img src="https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?q=80&w=800" alt="Ghardaia">
-                    <div class="destination-overlay">
-                        <h3>Ghardaia</h3>
-                        <p>Vallee du M'zab - Patrimoine mondial UNESCO aux architectures uniques</p>
-                    </div>
+            </div>
+            <div class="destination-card">
+                <img src="https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?w=800&q=80" alt="Ghardaia">
+                <div class="destination-overlay">
+                    <h3>Ghardaia</h3>
+                    <p>Vallee du M'zab - Patrimoine mondial UNESCO aux architectures uniques</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- About Section - Parallax en Profondeur -->
+    <!-- About - Depth Parallax -->
     <section id="about">
         <div class="depth-parallax-bg"></div>
         <div class="parallax-overlay"></div>
@@ -829,7 +304,7 @@
         </div>
     </section>
 
-    <!-- Gastronomie Section -->
+    <!-- Gastronomie -->
     <section id="gastronomie">
         <div class="gastro-bg"></div>
         <div class="parallax-overlay"></div>
@@ -838,16 +313,16 @@
             <div class="dishes-grid">
                 <div class="dish-item">
                     <div class="dish-image">
-                        <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?q=80&w=800" alt="Couscous">
+                        <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=800&q=80" alt="Couscous">
                     </div>
                     <div class="dish-info">
                         <h3>Couscous Royal</h3>
-                        <p>Plat emblematique prepare avec semoule fine, legumes du soleil et viandes savoureuses, mijotes dans un bouillon parfume aux epices.</p>
+                        <p>Plat emblematique prepare avec semoule fine, legumes du soleil et viandes savoureuses, mijotes dans un bouillon parfume.</p>
                     </div>
                 </div>
                 <div class="dish-item">
                     <div class="dish-image">
-                        <img src="https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?q=80&w=800" alt="Tajine">
+                        <img src="https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?w=800&q=80" alt="Tajine">
                     </div>
                     <div class="dish-info">
                         <h3>Tajine Zitoune</h3>
@@ -856,55 +331,63 @@
                 </div>
                 <div class="dish-item">
                     <div class="dish-image">
-                        <img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=80&w=800" alt="Baklawa">
+                        <img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=800&q=80" alt="Baklawa">
                     </div>
                     <div class="dish-info">
                         <h3>Baklawa Algeroise</h3>
-                        <p>Fines feuilles de pate phyllo dorees, garnies d'amandes concassees et nappees de miel parfume a la fleur d'oranger.</p>
+                        <p>Fines feuilles de pate phyllo dorees, garnies d'amandes et nappees de miel parfume a la fleur d'oranger.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Culture Section -->
+    <!-- Culture -->
     <section id="culture">
         <div class="culture-bg"></div>
-        <div class="culture-overlay"></div>
+        <div class="parallax-overlay"></div>
         <div class="culture-content">
             <h2 class="section-title">Heritage Culturel</h2>
             <div class="culture-grid">
                 <div class="culture-item">
-                    <div class="culture-icon">🏛️</div>
+                    <div class="culture-icon">
+                        <svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6M9 9h.01M15 9h.01M9 13h.01M15 13h.01"/></svg>
+                    </div>
                     <h3>Sites Historiques</h3>
-                    <p>Des ruines romaines de Timgad et Djemila aux monuments islamiques de Tlemcen, un patrimoine exceptionnel.</p>
+                    <p>Des ruines romaines de Timgad aux monuments islamiques de Tlemcen.</p>
                 </div>
                 <div class="culture-item">
-                    <div class="culture-icon">🎵</div>
-                    <h3>Musique</h3>
-                    <p>Berceau du rai, du chaabi et de la musique andalouse, un heritage musical unique qui fait vibrer le monde.</p>
-                </div>
-                <div class="culture-item">
-                    <div class="culture-icon">🧵</div>
+                    <div class="culture-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    </div>
                     <h3>Artisanat</h3>
-                    <p>Tapis berberes, poteries kabyles, bijoux touaregs - des savoir-faire ancestraux d'une grande finesse.</p>
+                    <p>Tapis berberes, poteries kabyles, bijoux touaregs aux savoir-faire ancestraux.</p>
                 </div>
                 <div class="culture-item">
-                    <div class="culture-icon">🕌</div>
-                    <h3>Architecture</h3>
-                    <p>La Casbah d'Alger, les mosquees de Tlemcen, les ksour du M'zab temoignent d'un genie architectural remarquable.</p>
+                    <div class="culture-icon">
+                        <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/></svg>
+                    </div>
+                    <h3>Litterature</h3>
+                    <p>De Kateb Yacine a Assia Djebar, ecrivains qui ont marque le monde.</p>
+                </div>
+                <div class="culture-item">
+                    <div class="culture-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zM12 6v6l4 2"/></svg>
+                    </div>
+                    <h3>Traditions</h3>
+                    <p>Fetes et rituels ancestraux perpetuant l'harmonie culturelle unique.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Sahara Section -->
+    <!-- Sahara -->
     <section id="sahara">
         <div class="sahara-bg"></div>
         <div class="sahara-overlay"></div>
         <div class="sahara-content">
             <h2>Le Grand Sahara</h2>
-            <p>Le desert algerien, plus vaste que plusieurs pays europeens reunis, offre des paysages a couper le souffle : dunes dorees du Grand Erg, montagnes du Hoggar, peintures rupestres du Tassili n'Ajjer. Une aventure inoubliable au coeur de l'immensite.</p>
+            <p>Le desert algerien, plus vaste que plusieurs pays europeens reunis, offre des paysages a couper le souffle : dunes dorees du Grand Erg, montagnes du Hoggar, peintures rupestres du Tassili n'Ajjer.</p>
             <a href="sahara.html" class="btn btn-primary">Explorer le Sahara</a>
         </div>
     </section>
@@ -925,224 +408,158 @@
     </footer>
 
     <script>
-        // Detection mobile
         const isMobile = window.innerWidth <= 768;
-
-        // Burger Menu Toggle
         const burger = document.getElementById('burger');
         const navLinks = document.getElementById('navLinks');
         const navbar = document.getElementById('navbar');
 
+        // Burger menu
         burger.addEventListener('click', () => {
             burger.classList.toggle('active');
             navLinks.classList.toggle('active');
-            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
         });
 
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 burger.classList.remove('active');
                 navLinks.classList.remove('active');
-                document.body.style.overflow = 'auto';
+                document.body.style.overflow = '';
             });
         });
 
+        // Close menu on outside click
         document.addEventListener('click', (e) => {
             if (!navbar.contains(e.target) && navLinks.classList.contains('active')) {
                 burger.classList.remove('active');
                 navLinks.classList.remove('active');
-                document.body.style.overflow = 'auto';
+                document.body.style.overflow = '';
             }
         });
 
-        // Navigation scroll effect
+        // Nav scroll effect
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
+            navbar.classList.toggle('scrolled', window.scrollY > 80);
         });
 
-        // Parallax vertical pour Hero
-        const parallaxBg = document.querySelector('.parallax-bg');
-        window.addEventListener('scroll', () => {
-            if (!isMobile && parallaxBg) {
-                const scrolled = window.pageYOffset;
-                parallaxBg.style.transform = `translateY(${scrolled * 0.5}px)`;
-            }
-        });
-
-        // Parallax horizontal pour les destinations
-        const horizontalWrapper = document.querySelector('.horizontal-scroll-wrapper');
-        const destinationsSection = document.getElementById('destinations');
-        let mouseScrollOffset = 0;
-
-        window.addEventListener('scroll', () => {
-            if (horizontalWrapper && destinationsSection) {
-                const rect = destinationsSection.getBoundingClientRect();
-                const sectionTop = rect.top;
-                const sectionHeight = rect.height;
-
-                if (sectionTop < window.innerHeight && sectionTop > -sectionHeight) {
-                    const progress = (window.innerHeight - sectionTop) / (window.innerHeight + sectionHeight);
-                    const maxScroll = horizontalWrapper.scrollWidth - window.innerWidth;
-                    const scrollOffset = progress * maxScroll;
-                    horizontalWrapper.style.transform = `translateX(-${scrollOffset + mouseScrollOffset}px)`;
-                }
-            }
-        });
-
-        // Controle a la souris (desktop uniquement)
-        if (destinationsSection && !isMobile) {
-            destinationsSection.addEventListener('mousemove', (e) => {
-                const rect = destinationsSection.getBoundingClientRect();
-                const mouseX = e.clientX;
-                const sectionWidth = rect.width;
-                const mouseProgress = mouseX / sectionWidth;
-                const maxMouseScroll = 300;
-                mouseScrollOffset = (mouseProgress - 0.5) * maxMouseScroll;
-
-                const sectionTop = rect.top;
-                const sectionHeight = rect.height;
-
-                if (sectionTop < window.innerHeight && sectionTop > -sectionHeight) {
-                    const progress = (window.innerHeight - sectionTop) / (window.innerHeight + sectionHeight);
-                    const maxScroll = horizontalWrapper.scrollWidth - window.innerWidth;
-                    const scrollOffset = progress * maxScroll;
-                    horizontalWrapper.style.transform = `translateX(-${scrollOffset + mouseScrollOffset}px)`;
-                }
-            });
-
-            destinationsSection.addEventListener('mouseleave', () => {
-                mouseScrollOffset = 0;
-            });
-        }
-
-        // Parallax en profondeur (zoom) pour About
+        // Parallax effects
+        const parallaxBg = document.querySelector('#hero .parallax-bg');
         const depthBg = document.querySelector('.depth-parallax-bg');
-        const aboutSection = document.getElementById('about');
+        const gastroBg = document.querySelector('.gastro-bg');
+        const cultureBg = document.querySelector('.culture-bg');
+        const saharaBg = document.querySelector('.sahara-bg');
+        const footerBg = document.querySelector('.footer-bg');
 
-        window.addEventListener('scroll', () => {
+        function parallaxScroll() {
+            if (isMobile) return;
+            const scrolled = window.pageYOffset;
+
+            // Hero parallax
+            if (parallaxBg) {
+                parallaxBg.style.transform = `translateY(${scrolled * 0.4}px)`;
+            }
+
+            // Depth parallax (zoom effect)
+            const aboutSection = document.getElementById('about');
             if (depthBg && aboutSection) {
                 const rect = aboutSection.getBoundingClientRect();
-                const sectionTop = rect.top;
-                const sectionHeight = rect.height;
-
-                if (sectionTop < window.innerHeight && sectionTop > -sectionHeight) {
-                    const progress = 1 - (sectionTop / window.innerHeight);
-                    const scale = 1.5 - (progress * 0.3);
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    const progress = 1 - (rect.top / window.innerHeight);
+                    const scale = 1.4 - (progress * 0.25);
                     depthBg.style.transform = `translate(-50%, -50%) scale(${scale})`;
                 }
             }
-        });
 
-        // Parallax 3D pour Gastronomie
-        const gastroBg = document.querySelector('.gastro-bg');
-        const gastroSection = document.getElementById('gastronomie');
-
-        window.addEventListener('scroll', () => {
+            // Gastro parallax
+            const gastroSection = document.getElementById('gastronomie');
             if (gastroBg && gastroSection) {
                 const rect = gastroSection.getBoundingClientRect();
-                const sectionTop = rect.top;
-                const sectionHeight = rect.height;
-
-                if (sectionTop < window.innerHeight && sectionTop > -sectionHeight) {
-                    const progress = (window.innerHeight - sectionTop) / (window.innerHeight + sectionHeight);
-                    const translateY = progress * 200 - 100;
-                    const scale = 1 + (progress * 0.2);
-                    gastroBg.style.transform = `translateY(${translateY}px) scale(${scale})`;
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    const progress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+                    gastroBg.style.transform = `translateY(${progress * 150 - 75}px) scale(${1 + progress * 0.15})`;
                 }
             }
-        });
 
-        // Parallax pour Culture
-        const cultureBg = document.querySelector('.culture-bg');
-        const cultureSection = document.getElementById('culture');
-
-        window.addEventListener('scroll', () => {
+            // Culture parallax
+            const cultureSection = document.getElementById('culture');
             if (cultureBg && cultureSection) {
                 const rect = cultureSection.getBoundingClientRect();
-                const sectionTop = rect.top;
-                const sectionHeight = rect.height;
-
-                if (sectionTop < window.innerHeight && sectionTop > -sectionHeight) {
-                    const progress = (window.innerHeight - sectionTop) / (window.innerHeight + sectionHeight);
-                    const scale = 1.2 + (progress * 0.3);
-                    const translateY = (progress - 0.5) * 100;
-                    cultureBg.style.transform = `translateY(${translateY}px) scale(${scale})`;
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    const progress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+                    cultureBg.style.transform = `scale(${1.15 + progress * 0.2}) translateY(${(progress - 0.5) * 80}px)`;
                 }
             }
-        });
 
-        // Parallax pour Sahara
-        const saharaBg = document.querySelector('.sahara-bg');
-        const saharaSection = document.getElementById('sahara');
-
-        window.addEventListener('scroll', () => {
+            // Sahara parallax
+            const saharaSection = document.getElementById('sahara');
             if (saharaBg && saharaSection) {
                 const rect = saharaSection.getBoundingClientRect();
-                const sectionTop = rect.top;
-                const sectionHeight = rect.height;
-
-                if (sectionTop < window.innerHeight && sectionTop > -sectionHeight) {
-                    const progress = (window.innerHeight - sectionTop) / (window.innerHeight + sectionHeight);
-                    const scale = 1 + (progress * 0.3);
-                    const translateY = progress * 100 - 50;
-                    saharaBg.style.transform = `translateY(${translateY}px) scale(${scale})`;
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    const progress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+                    saharaBg.style.transform = `translateY(${progress * 80 - 40}px) scale(${1 + progress * 0.2})`;
                 }
             }
-        });
 
-        // Parallax pour Footer
-        const footerBg = document.querySelector('.footer-bg');
-        const footerSection = document.querySelector('footer');
-
-        window.addEventListener('scroll', () => {
+            // Footer parallax
+            const footerSection = document.querySelector('footer');
             if (footerBg && footerSection) {
                 const rect = footerSection.getBoundingClientRect();
-                const sectionTop = rect.top;
-                const sectionHeight = rect.height;
-
-                if (sectionTop < window.innerHeight && sectionTop > -sectionHeight) {
-                    const progress = (window.innerHeight - sectionTop) / (window.innerHeight + sectionHeight);
-                    const scale = 1 + (progress * 0.3);
-                    const translateY = progress * 100 - 50;
-                    footerBg.style.transform = `translateY(${translateY}px) scale(${scale})`;
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    const progress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+                    footerBg.style.transform = `translateY(${progress * 60 - 30}px) scale(${1 + progress * 0.2})`;
                 }
+            }
+        }
+
+        window.addEventListener('scroll', parallaxScroll);
+
+        // Horizontal scroll parallax
+        const horizontalWrapper = document.getElementById('horizontalScroll');
+        const destinationsSection = document.getElementById('destinations');
+        let mouseOffset = 0;
+
+        window.addEventListener('scroll', () => {
+            if (!horizontalWrapper || !destinationsSection) return;
+            const rect = destinationsSection.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                const progress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+                const maxScroll = horizontalWrapper.scrollWidth - window.innerWidth + 100;
+                horizontalWrapper.style.transform = `translateX(-${Math.min(progress * maxScroll, maxScroll)}px)`;
             }
         });
 
-        // Intersection Observer pour animations
-        const observerOptions = {
-            threshold: 0.2,
-            rootMargin: '0px 0px -100px 0px'
-        };
+        // Mouse control for horizontal scroll (desktop only)
+        if (!isMobile && destinationsSection) {
+            destinationsSection.addEventListener('mousemove', (e) => {
+                const mouseX = e.clientX / window.innerWidth;
+                mouseOffset = (mouseX - 0.5) * 200;
+            });
+        }
 
+        // Intersection Observer for animations
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
 
         document.querySelectorAll('.section-title, .about-content, .dish-item, .culture-item, .sahara-content').forEach(el => {
             observer.observe(el);
         });
 
-        // Animation delai pour les items
-        document.querySelectorAll('.dish-item').forEach((item, index) => {
-            item.style.transitionDelay = `${index * 0.1}s`;
+        // Staggered animation delays
+        document.querySelectorAll('.dish-item').forEach((item, i) => {
+            item.style.transitionDelay = `${i * 0.1}s`;
         });
-
-        document.querySelectorAll('.culture-item').forEach((item, index) => {
-            item.style.transitionDelay = `${index * 0.1}s`;
+        document.querySelectorAll('.culture-item').forEach((item, i) => {
+            item.style.transitionDelay = `${i * 0.08}s`;
         });
 
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+            anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
