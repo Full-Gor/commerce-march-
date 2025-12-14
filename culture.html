@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Culture et Heritage - Algerie</title>
+    <meta name="description" content="Decouvrez le riche patrimoine culturel algerien : musique, artisanat, architecture, litterature et traditions.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; overflow-x: hidden; background: #000; color: #fff; }
+
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            padding: 30px 60px; display: flex; justify-content: space-between; align-items: center;
+            transition: all 0.3s ease; background: rgba(0, 0, 0, 0);
+        }
+        nav.scrolled { background: rgba(0, 100, 60, 0.95); padding: 20px 60px; backdrop-filter: blur(10px); }
+        .logo { font-size: 28px; font-weight: 700; letter-spacing: 3px; background: linear-gradient(135deg, #00a86b, #fff, #d52b1e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .nav-links { display: flex; gap: 40px; list-style: none; }
+        .nav-links a { color: #fff; text-decoration: none; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; position: relative; transition: opacity 0.3s; }
+        .nav-links a:hover { opacity: 0.7; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, #00a86b, #d52b1e); transition: width 0.3s; }
+        .nav-links a:hover::after { width: 100%; }
+
+        .burger-menu { display: none; flex-direction: column; cursor: pointer; z-index: 1001; width: 30px; height: 24px; position: relative; }
+        .burger-menu span { width: 100%; height: 2px; background: #fff; transition: all 0.3s ease; position: absolute; left: 0; }
+        .burger-menu span:nth-child(1) { top: 0; }
+        .burger-menu span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+        .burger-menu span:nth-child(3) { bottom: 0; }
+        .burger-menu.active span:nth-child(1) { top: 50%; transform: translateY(-50%) rotate(45deg); }
+        .burger-menu.active span:nth-child(2) { opacity: 0; }
+        .burger-menu.active span:nth-child(3) { bottom: 50%; transform: translateY(50%) rotate(-45deg); }
+
+        section { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+
+        #hero { height: 80vh; }
+        .parallax-bg { position: absolute; top: -20%; left: 0; width: 100%; height: 140%; background-size: cover; background-position: center; will-change: transform; }
+        #hero .parallax-bg { background-image: url('https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?q=80&w=2000'); }
+        .parallax-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(0, 100, 60, 0.6) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(200, 40, 30, 0.4) 100%); }
+
+        .hero-content { position: relative; z-index: 10; text-align: center; padding: 20px; }
+        .hero-content h1 { font-size: clamp(40px, 7vw, 100px); font-weight: 200; letter-spacing: 10px; margin-bottom: 20px; opacity: 0; animation: fadeInUp 1s ease forwards; }
+        .hero-content p { font-size: clamp(16px, 2vw, 22px); font-weight: 300; letter-spacing: 3px; opacity: 0; animation: fadeInUp 1s ease 0.3s forwards; }
+
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } from { opacity: 0; transform: translateY(30px); } }
+
+        .section-title { text-align: center; font-size: clamp(35px, 5vw, 70px); font-weight: 200; letter-spacing: 5px; margin-bottom: 60px; opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
+        .section-title.visible { opacity: 1; transform: translateY(0); }
+
+        /* Culture Grid Section */
+        .culture-section { background: #0a0a0a; padding: 100px 60px; }
+        .culture-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; max-width: 1400px; margin: 0 auto; }
+
+        .culture-card { position: relative; background: linear-gradient(145deg, #151515, #0a0a0a); border-radius: 25px; padding: 50px 40px; border: 1px solid rgba(0, 168, 107, 0.2); transition: all 0.5s ease; opacity: 0; transform: translateY(40px); text-align: center; }
+        .culture-card.visible { opacity: 1; transform: translateY(0); }
+        .culture-card:hover { transform: translateY(-15px); border-color: rgba(0, 168, 107, 0.5); box-shadow: 0 30px 60px rgba(0, 168, 107, 0.15); }
+
+        .culture-icon { font-size: 70px; margin-bottom: 30px; display: block; }
+        .culture-card h3 { font-size: 28px; font-weight: 300; letter-spacing: 3px; margin-bottom: 20px; color: #00a86b; }
+        .culture-card p { font-size: 16px; line-height: 1.8; opacity: 0.85; }
+
+        /* UNESCO Section */
+        #unesco { min-height: 100vh; }
+        #unesco .parallax-bg { background-image: url('https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=2000'); opacity: 0.6; }
+
+        .unesco-content { position: relative; z-index: 10; max-width: 1100px; padding: 60px; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(0, 168, 107, 0.3); border-radius: 30px; opacity: 0; transform: translateY(50px); transition: all 1s ease; }
+        .unesco-content.visible { opacity: 1; transform: translateY(0); }
+        .unesco-content h2 { font-size: clamp(30px, 4vw, 50px); font-weight: 200; letter-spacing: 5px; margin-bottom: 30px; color: #00a86b; text-align: center; }
+        .unesco-content > p { font-size: 18px; line-height: 1.9; text-align: center; margin-bottom: 50px; }
+
+        .unesco-sites { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        .unesco-site { background: rgba(0, 168, 107, 0.1); padding: 30px; border-radius: 15px; transition: all 0.3s ease; }
+        .unesco-site:hover { background: rgba(0, 168, 107, 0.2); transform: translateY(-5px); }
+        .unesco-site h4 { font-size: 20px; margin-bottom: 12px; color: #00a86b; display: flex; align-items: center; gap: 10px; }
+        .unesco-site p { font-size: 15px; opacity: 0.85; line-height: 1.7; }
+
+        /* Music Section */
+        #music { background: linear-gradient(180deg, #0a0a0a 0%, #111 100%); padding: 100px 60px; position: relative; overflow: hidden; }
+        #music .parallax-bg { background-image: url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=2000'); opacity: 0.25; }
+
+        .music-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 35px; max-width: 1300px; margin: 0 auto; position: relative; z-index: 10; }
+        .music-card { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); border-radius: 20px; padding: 40px; border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.4s ease; opacity: 0; transform: translateY(30px); }
+        .music-card.visible { opacity: 1; transform: translateY(0); }
+        .music-card:hover { border-color: rgba(0, 168, 107, 0.5); transform: translateY(-10px); }
+        .music-card h3 { font-size: 26px; font-weight: 300; letter-spacing: 2px; margin-bottom: 15px; color: #00a86b; }
+        .music-card .origin { font-size: 14px; letter-spacing: 2px; opacity: 0.6; margin-bottom: 20px; text-transform: uppercase; }
+        .music-card p { font-size: 15px; line-height: 1.8; opacity: 0.85; }
+
+        /* Artisanat Section */
+        #artisanat { background: #0a0a0a; padding: 100px 60px; }
+        .artisanat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 40px; max-width: 1400px; margin: 0 auto; }
+
+        .artisanat-card { position: relative; height: 450px; border-radius: 25px; overflow: hidden; cursor: pointer; transition: all 0.5s ease; opacity: 0; transform: translateY(40px); }
+        .artisanat-card.visible { opacity: 1; transform: translateY(0); }
+        .artisanat-card:hover { transform: translateY(-15px) scale(1.02); box-shadow: 0 30px 60px rgba(0, 168, 107, 0.2); }
+        .artisanat-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .artisanat-card:hover img { transform: scale(1.15); }
+
+        .artisanat-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 40px; background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, transparent 100%); }
+        .artisanat-content h3 { font-size: 28px; font-weight: 300; letter-spacing: 3px; margin-bottom: 10px; color: #00a86b; }
+        .artisanat-content p { font-size: 15px; line-height: 1.7; opacity: 0.9; }
+
+        footer { background: linear-gradient(180deg, #0a0a0a 0%, #000 100%); padding: 60px 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); }
+        footer p { opacity: 0.6; font-size: 14px; letter-spacing: 2px; }
+        .algerian-flag { display: flex; justify-content: center; gap: 3px; margin-top: 20px; }
+        .flag-stripe { width: 50px; height: 30px; }
+        .flag-green { background: #00a86b; border-radius: 3px 0 0 3px; }
+        .flag-white { background: #fff; display: flex; align-items: center; justify-content: center; }
+        .flag-symbol { color: #d52b1e; font-size: 18px; }
+
+        @media (max-width: 1024px) {
+            nav { padding: 20px 40px; }
+            .burger-menu { display: flex; }
+            .nav-links { position: fixed; top: 0; right: -100%; height: 100vh; width: 70%; max-width: 400px; background: rgba(0, 100, 60, 0.98); backdrop-filter: blur(20px); flex-direction: column; justify-content: center; align-items: center; gap: 40px; transition: right 0.4s ease; padding: 60px 40px; }
+            .nav-links.active { right: 0; }
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 15px 20px; }
+            .logo { font-size: 22px; }
+            .culture-section, #music, #artisanat { padding: 60px 20px; }
+            .culture-grid, .music-grid, .artisanat-grid { grid-template-columns: 1fr; }
+            .culture-card, .music-card { padding: 35px 25px; }
+            .artisanat-card { height: 380px; }
+            .unesco-content { padding: 30px 20px; margin: 20px; }
+            .unesco-sites { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <a href="index.html" class="logo">ALGERIE</a>
+        <div class="burger-menu" id="burger"><span></span><span></span><span></span></div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="villes.html">Villes</a></li>
+            <li><a href="gastronomie.html">Gastronomie</a></li>
+            <li><a href="culture.html">Culture</a></li>
+            <li><a href="sahara.html">Sahara</a></li>
+        </ul>
+    </nav>
+
+    <section id="hero">
+        <div class="parallax-bg"></div>
+        <div class="parallax-overlay"></div>
+        <div class="hero-content">
+            <h1>CULTURE</h1>
+            <p>Un heritage millenaire vivant</p>
+        </div>
+    </section>
+
+    <section class="culture-section">
+        <h2 class="section-title">Patrimoine Culturel</h2>
+        <div class="culture-grid">
+            <div class="culture-card">
+                <span class="culture-icon">🏛️</span>
+                <h3>HISTOIRE</h3>
+                <p>Des Numides aux temps modernes, l'Algerie a ete le carrefour de grandes civilisations : phenicienne, romaine, byzantine, arabe, ottomane. Chaque epoque a laisse son empreinte indelebile.</p>
+            </div>
+            <div class="culture-card">
+                <span class="culture-icon">📚</span>
+                <h3>LITTERATURE</h3>
+                <p>De Kateb Yacine a Assia Djebar, de Mohamed Dib a Yasmina Khadra, les ecrivains algeriens ont marque la litterature mondiale par leur talent et leur vision unique.</p>
+            </div>
+            <div class="culture-card">
+                <span class="culture-icon">🎭</span>
+                <h3>TRADITIONS</h3>
+                <p>Fetes, ceremonies et rituels ancestraux perpetuent les traditions berberes et arabes dans une harmonie culturelle unique celebree a travers tout le pays.</p>
+            </div>
+            <div class="culture-card">
+                <span class="culture-icon">🗣️</span>
+                <h3>LANGUES</h3>
+                <p>L'arabe et le tamazight (berbere) sont les langues officielles. Cette richesse linguistique reflete la diversite culturelle du pays.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="unesco">
+        <div class="parallax-bg"></div>
+        <div class="parallax-overlay"></div>
+        <div class="unesco-content">
+            <h2>PATRIMOINE MONDIAL UNESCO</h2>
+            <p>L'Algerie compte 7 sites inscrits au patrimoine mondial de l'UNESCO, temoignant de la richesse exceptionnelle de son histoire et de sa culture.</p>
+            <div class="unesco-sites">
+                <div class="unesco-site">
+                    <h4>🏛️ Djemila</h4>
+                    <p>Ancienne cite romaine de Cuicul, l'un des plus beaux ensembles de ruines romaines au monde, avec ses temples, basiliques et arcs de triomphe.</p>
+                </div>
+                <div class="unesco-site">
+                    <h4>🏛️ Timgad</h4>
+                    <p>Cite romaine fondee en 100 ap. J.-C., exemple parfait d'urbanisme romain avec son plan en damier et son arc de Trajan.</p>
+                </div>
+                <div class="unesco-site">
+                    <h4>🏘️ Casbah d'Alger</h4>
+                    <p>Cite historique d'Alger, labyrinthe de ruelles et de maisons ottomanes perchees sur une colline face a la mer.</p>
+                </div>
+                <div class="unesco-site">
+                    <h4>🏜️ Tassili n'Ajjer</h4>
+                    <p>Plateau saharien abritant plus de 15000 peintures et gravures rupestres prehistoriques dans un paysage lunar.</p>
+                </div>
+                <div class="unesco-site">
+                    <h4>🕌 Vallee du M'zab</h4>
+                    <p>Ensemble de cinq ksour (villages fortifies) au coeur du Sahara, chef-d'oeuvre d'architecture traditionnelle.</p>
+                </div>
+                <div class="unesco-site">
+                    <h4>🏛️ Tipasa</h4>
+                    <p>Site archeologique phenicien, romain et paleochretien sur la cote mediterraneenne, celebre par Albert Camus.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="music">
+        <div class="parallax-bg"></div>
+        <h2 class="section-title">Musiques d'Algerie</h2>
+        <div class="music-grid">
+            <div class="music-card">
+                <h3>RAI</h3>
+                <p class="origin">Oran - Ouest Algerien</p>
+                <p>Ne dans les annees 1920, le rai est devenu un phenomene mondial grace a des artistes comme Cheb Khaled, Cheb Mami et Rachid Taha. Melange de traditions maghrebines et de sons modernes.</p>
+            </div>
+            <div class="music-card">
+                <h3>CHAABI</h3>
+                <p class="origin">Alger - Centre</p>
+                <p>Musique populaire algeroise nee dans la Casbah au debut du XXe siecle. El Hadj M'Hamed El Anka en fut le maitre inconteste. Poesie et melodie au service du peuple.</p>
+            </div>
+            <div class="music-card">
+                <h3>ANDALOU</h3>
+                <p class="origin">Tlemcen, Alger, Constantine</p>
+                <p>Heritage musical de l'Andalousie musulmane, la musique arabo-andalouse se decline en trois ecoles : la sana'a de Tlemcen, la gharnati d'Alger et le malouf de Constantine.</p>
+            </div>
+            <div class="music-card">
+                <h3>KABYLE</h3>
+                <p class="origin">Kabylie - Montagnes</p>
+                <p>Musique berbere aux melodies melancoliques et poetiques. Idir, Ait Menguellet, Matoub Lounes ont porte cette musique sur la scene internationale.</p>
+            </div>
+            <div class="music-card">
+                <h3>GNAWA</h3>
+                <p class="origin">Sud Algerien</p>
+                <p>Musique spirituelle aux rythmes hypnotiques, heritee des traditions africaines subsahariennes. Ceremonies et rituels de guerison par la musique.</p>
+            </div>
+            <div class="music-card">
+                <h3>BEDOUI</h3>
+                <p class="origin">Hauts Plateaux</p>
+                <p>Musique des nomades des steppes, caracterisee par la gasba (flute) et le guellal (tambour). Chants d'amour et de la vie pastorale.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="artisanat">
+        <h2 class="section-title">Artisanat Traditionnel</h2>
+        <div class="artisanat-grid">
+            <div class="artisanat-card">
+                <img src="https://images.unsplash.com/photo-1590736969955-71cc94901144?q=80&w=800" alt="Tapis Berberes">
+                <div class="artisanat-content">
+                    <h3>TAPIS BERBERES</h3>
+                    <p>Chaque region a ses motifs : les tapis de Kabylie, du M'zab, des Aures sont des oeuvres d'art tissees a la main, porteuses de symboles ancestraux.</p>
+                </div>
+            </div>
+            <div class="artisanat-card">
+                <img src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?q=80&w=800" alt="Poterie Kabyle">
+                <div class="artisanat-content">
+                    <h3>POTERIE KABYLE</h3>
+                    <p>Art feminin par excellence, la poterie kabyle se distingue par ses motifs geometriques peints a la main sur terre cuite. Chaque piece est unique.</p>
+                </div>
+            </div>
+            <div class="artisanat-card">
+                <img src="https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=800" alt="Bijoux Touaregs">
+                <div class="artisanat-content">
+                    <h3>BIJOUX TOUAREGS</h3>
+                    <p>L'orfevrerie touareg est celebre pour ses croix d'Agadez en argent et ses bijoux en ebene. Un artisanat raffine transmis de pere en fils.</p>
+                </div>
+            </div>
+            <div class="artisanat-card">
+                <img src="https://images.unsplash.com/photo-1606722590583-6951b5ea92ad?q=80&w=800" alt="Cuir de Ghardaia">
+                <div class="artisanat-content">
+                    <h3>MAROQUINERIE</h3>
+                    <p>Le travail du cuir, notamment a Ghardaia, produit des babouches, sacs et accessoires aux couleurs vives et aux finitions impeccables.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>2024 Algerie Decouverte - Tous droits reserves</p>
+        <div class="algerian-flag">
+            <div class="flag-stripe flag-green"></div>
+            <div class="flag-stripe flag-white"><span class="flag-symbol">☪</span></div>
+            <div class="flag-stripe flag-green"></div>
+        </div>
+    </footer>
+
+    <script>
+        const isMobile = window.innerWidth <= 768;
+        const burger = document.getElementById('burger');
+        const navLinks = document.getElementById('navLinks');
+        const navbar = document.getElementById('navbar');
+
+        burger.addEventListener('click', () => {
+            burger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                burger.classList.remove('active');
+                navLinks.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 100);
+        });
+
+        // Parallax effects
+        const parallaxBgs = document.querySelectorAll('.parallax-bg');
+        window.addEventListener('scroll', () => {
+            if (!isMobile) {
+                parallaxBgs.forEach(bg => {
+                    const section = bg.parentElement;
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top < window.innerHeight && rect.bottom > 0) {
+                        const scrolled = window.pageYOffset - section.offsetTop;
+                        bg.style.transform = `translateY(${scrolled * 0.4}px)`;
+                    }
+                });
+            }
+        });
+
+        // Intersection Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.section-title, .culture-card, .unesco-content, .music-card, .artisanat-card').forEach(el => observer.observe(el));
+
+        document.querySelectorAll('.culture-card, .music-card, .artisanat-card').forEach((card, index) => {
+            card.style.transitionDelay = `${(index % 4) * 0.1}s`;
+        });
+    </script>
+</body>
+</html>

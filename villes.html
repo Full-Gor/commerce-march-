@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Villes d'Algerie - Decouverte</title>
+    <meta name="description" content="Explorez les villes magnifiques d'Algerie : Alger, Oran, Constantine, Tlemcen, Ghardaia et bien d'autres.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; overflow-x: hidden; background: #000; color: #fff; }
+
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            padding: 30px 60px; display: flex; justify-content: space-between; align-items: center;
+            transition: all 0.3s ease; background: rgba(0, 0, 0, 0);
+        }
+        nav.scrolled { background: rgba(0, 100, 60, 0.95); padding: 20px 60px; backdrop-filter: blur(10px); }
+        .logo { font-size: 28px; font-weight: 700; letter-spacing: 3px; background: linear-gradient(135deg, #00a86b, #fff, #d52b1e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .nav-links { display: flex; gap: 40px; list-style: none; }
+        .nav-links a { color: #fff; text-decoration: none; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; position: relative; transition: opacity 0.3s; }
+        .nav-links a:hover { opacity: 0.7; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, #00a86b, #d52b1e); transition: width 0.3s; }
+        .nav-links a:hover::after { width: 100%; }
+
+        .burger-menu { display: none; flex-direction: column; cursor: pointer; z-index: 1001; width: 30px; height: 24px; position: relative; }
+        .burger-menu span { width: 100%; height: 2px; background: #fff; transition: all 0.3s ease; position: absolute; left: 0; }
+        .burger-menu span:nth-child(1) { top: 0; }
+        .burger-menu span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+        .burger-menu span:nth-child(3) { bottom: 0; }
+        .burger-menu.active span:nth-child(1) { top: 50%; transform: translateY(-50%) rotate(45deg); }
+        .burger-menu.active span:nth-child(2) { opacity: 0; }
+        .burger-menu.active span:nth-child(3) { bottom: 50%; transform: translateY(50%) rotate(-45deg); }
+
+        section { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+
+        #hero { height: 80vh; }
+        .parallax-bg { position: absolute; top: -20%; left: 0; width: 100%; height: 140%; background-size: cover; background-position: center; will-change: transform; }
+        #hero .parallax-bg { background-image: url('https://images.unsplash.com/photo-1572449043416-55f4685c9bb7?q=80&w=2000'); }
+        .parallax-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(0, 100, 60, 0.6) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(200, 40, 30, 0.4) 100%); }
+
+        .hero-content { position: relative; z-index: 10; text-align: center; padding: 20px; }
+        .hero-content h1 { font-size: clamp(40px, 7vw, 100px); font-weight: 200; letter-spacing: 10px; margin-bottom: 20px; opacity: 0; animation: fadeInUp 1s ease forwards; }
+        .hero-content p { font-size: clamp(16px, 2vw, 22px); font-weight: 300; letter-spacing: 3px; opacity: 0; animation: fadeInUp 1s ease 0.3s forwards; }
+
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } from { opacity: 0; transform: translateY(30px); } }
+
+        .section-title { text-align: center; font-size: clamp(35px, 5vw, 70px); font-weight: 200; letter-spacing: 5px; margin-bottom: 60px; opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
+        .section-title.visible { opacity: 1; transform: translateY(0); }
+
+        .cities-section { background: #0a0a0a; padding: 100px 60px; }
+        .cities-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 40px; max-width: 1600px; margin: 0 auto; }
+
+        .city-card { position: relative; height: 500px; border-radius: 20px; overflow: hidden; cursor: pointer; transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); opacity: 0; transform: translateY(40px); }
+        .city-card.visible { opacity: 1; transform: translateY(0); }
+        .city-card:hover { transform: translateY(-15px) scale(1.02); box-shadow: 0 30px 60px rgba(0, 168, 107, 0.3); }
+        .city-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .city-card:hover img { transform: scale(1.15); }
+
+        .city-card-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 40px; background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, transparent 100%); transform: translateY(30px); transition: transform 0.4s ease; }
+        .city-card:hover .city-card-content { transform: translateY(0); }
+        .city-card-content h3 { font-size: 32px; font-weight: 300; letter-spacing: 3px; margin-bottom: 10px; color: #00a86b; }
+        .city-card-content .subtitle { font-size: 16px; letter-spacing: 2px; opacity: 0.7; margin-bottom: 15px; font-style: italic; }
+        .city-card-content p { font-size: 15px; line-height: 1.7; opacity: 0.9; }
+
+        /* City Detail Sections */
+        .city-detail { position: relative; min-height: 100vh; }
+        .city-detail .parallax-bg { opacity: 0.7; }
+
+        #alger .parallax-bg { background-image: url('https://images.unsplash.com/photo-1572449043416-55f4685c9bb7?q=80&w=2000'); }
+        #oran .parallax-bg { background-image: url('https://images.unsplash.com/photo-1539768942893-daf53e448371?q=80&w=2000'); }
+        #constantine .parallax-bg { background-image: url('https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=2000'); }
+
+        .city-detail-content { position: relative; z-index: 10; max-width: 900px; padding: 50px; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(0, 168, 107, 0.3); border-radius: 25px; opacity: 0; transform: translateY(50px); transition: all 1s ease; }
+        .city-detail-content.visible { opacity: 1; transform: translateY(0); }
+        .city-detail-content h2 { font-size: clamp(35px, 5vw, 60px); font-weight: 200; letter-spacing: 5px; margin-bottom: 15px; color: #00a86b; }
+        .city-detail-content .nickname { font-size: 20px; letter-spacing: 3px; opacity: 0.7; margin-bottom: 30px; font-style: italic; }
+        .city-detail-content p { font-size: 18px; line-height: 1.9; margin-bottom: 20px; }
+        .city-detail-content ul { list-style: none; margin-top: 25px; }
+        .city-detail-content li { font-size: 16px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 15px; }
+        .city-detail-content li span { color: #00a86b; font-size: 20px; }
+
+        footer { background: linear-gradient(180deg, #0a0a0a 0%, #000 100%); padding: 60px 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); }
+        footer p { opacity: 0.6; font-size: 14px; letter-spacing: 2px; }
+        .algerian-flag { display: flex; justify-content: center; gap: 3px; margin-top: 20px; }
+        .flag-stripe { width: 50px; height: 30px; }
+        .flag-green { background: #00a86b; border-radius: 3px 0 0 3px; }
+        .flag-white { background: #fff; display: flex; align-items: center; justify-content: center; }
+        .flag-symbol { color: #d52b1e; font-size: 18px; }
+
+        @media (max-width: 1024px) {
+            nav { padding: 20px 40px; }
+            .burger-menu { display: flex; }
+            .nav-links { position: fixed; top: 0; right: -100%; height: 100vh; width: 70%; max-width: 400px; background: rgba(0, 100, 60, 0.98); backdrop-filter: blur(20px); flex-direction: column; justify-content: center; align-items: center; gap: 40px; transition: right 0.4s ease; padding: 60px 40px; }
+            .nav-links.active { right: 0; }
+            .cities-grid { grid-template-columns: 1fr; gap: 30px; }
+            .city-card { height: 400px; }
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 15px 20px; }
+            .logo { font-size: 22px; }
+            .cities-section { padding: 60px 20px; }
+            .cities-grid { grid-template-columns: 1fr; }
+            .city-card { height: 350px; }
+            .city-card-content { padding: 25px; }
+            .city-card-content h3 { font-size: 24px; }
+            .city-detail-content { padding: 30px 20px; margin: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <a href="index.html" class="logo">ALGERIE</a>
+        <div class="burger-menu" id="burger"><span></span><span></span><span></span></div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="villes.html">Villes</a></li>
+            <li><a href="gastronomie.html">Gastronomie</a></li>
+            <li><a href="culture.html">Culture</a></li>
+            <li><a href="sahara.html">Sahara</a></li>
+        </ul>
+    </nav>
+
+    <section id="hero">
+        <div class="parallax-bg"></div>
+        <div class="parallax-overlay"></div>
+        <div class="hero-content">
+            <h1>VILLES D'ALGERIE</h1>
+            <p>Des cites millenaires aux metropoles modernes</p>
+        </div>
+    </section>
+
+    <section class="cities-section">
+        <h2 class="section-title">Explorez nos Villes</h2>
+        <div class="cities-grid">
+            <div class="city-card">
+                <img src="https://images.unsplash.com/photo-1572449043416-55f4685c9bb7?q=80&w=800" alt="Alger">
+                <div class="city-card-content">
+                    <h3>ALGER</h3>
+                    <p class="subtitle">El Bahdja - La Blanche</p>
+                    <p>Capitale vibrante surplombant la Mediterranee, Alger fascine par sa Casbah millenaire classee UNESCO et son architecture ottomane.</p>
+                </div>
+            </div>
+            <div class="city-card">
+                <img src="https://images.unsplash.com/photo-1539768942893-daf53e448371?q=80&w=800" alt="Oran">
+                <div class="city-card-content">
+                    <h3>ORAN</h3>
+                    <p class="subtitle">El Bahia - La Radieuse</p>
+                    <p>Deuxieme ville du pays, Oran est le berceau du rai et seduit par son melange unique d'influences espagnoles et ottomanes.</p>
+                </div>
+            </div>
+            <div class="city-card">
+                <img src="https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=800" alt="Constantine">
+                <div class="city-card-content">
+                    <h3>CONSTANTINE</h3>
+                    <p class="subtitle">Cite des Ponts Suspendus</p>
+                    <p>Perchee sur un rocher spectaculaire, Constantine est l'une des plus anciennes cites au monde, celebre pour ses ponts vertigineux.</p>
+                </div>
+            </div>
+            <div class="city-card">
+                <img src="https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?q=80&w=800" alt="Tlemcen">
+                <div class="city-card-content">
+                    <h3>TLEMCEN</h3>
+                    <p class="subtitle">Perle du Maghreb</p>
+                    <p>Ancienne capitale du Maghreb central, Tlemcen enchante par ses monuments islamiques, ses jardins et son artisanat raffine.</p>
+                </div>
+            </div>
+            <div class="city-card">
+                <img src="https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?q=80&w=800" alt="Ghardaia">
+                <div class="city-card-content">
+                    <h3>GHARDAIA</h3>
+                    <p class="subtitle">Vallee du M'zab</p>
+                    <p>Oasis UNESCO aux architectures uniques, Ghardaia fascine par son urbanisme traditionnel et ses cinq villes fortifiees.</p>
+                </div>
+            </div>
+            <div class="city-card">
+                <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=800" alt="Annaba">
+                <div class="city-card-content">
+                    <h3>ANNABA</h3>
+                    <p class="subtitle">Perle de l'Est</p>
+                    <p>Ville cotiere aux plages magnifiques, Annaba abrite les ruines romaines d'Hippone et la celebre basilique Saint-Augustin.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="alger" class="city-detail">
+        <div class="parallax-bg"></div>
+        <div class="parallax-overlay"></div>
+        <div class="city-detail-content">
+            <h2>ALGER</h2>
+            <p class="nickname">"El Bahdja" - La Joyeuse</p>
+            <p>Capitale de l'Algerie, Alger est une metropole de plus de 4 millions d'habitants qui s'etend en amphitheatre sur les collines dominant la baie. La ville melange harmonieusement son passe ottoman avec l'architecture haussmannienne et les constructions modernes.</p>
+            <ul>
+                <li><span>🏛️</span> La Casbah - Patrimoine mondial UNESCO</li>
+                <li><span>🕌</span> Grande Mosquee d'Alger - 3eme plus grande au monde</li>
+                <li><span>🏖️</span> Plages mediterraneennes</li>
+                <li><span>🎭</span> Opera et vie culturelle intense</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="oran" class="city-detail">
+        <div class="parallax-bg"></div>
+        <div class="parallax-overlay"></div>
+        <div class="city-detail-content">
+            <h2>ORAN</h2>
+            <p class="nickname">"El Bahia" - La Radieuse</p>
+            <p>Deuxieme ville d'Algerie, Oran est le coeur culturel de l'ouest algerien. Berceau de la musique rai, elle seduit par son ambiance festive, son architecture coloniale espagnole et son fort de Santa Cruz dominant la ville.</p>
+            <ul>
+                <li><span>🎵</span> Berceau de la musique Rai</li>
+                <li><span>🏰</span> Fort Santa Cruz et chapelle</li>
+                <li><span>🎭</span> Theatre regional et opera</li>
+                <li><span>⚽</span> Stade Ahmed Zabana</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="constantine" class="city-detail">
+        <div class="parallax-bg"></div>
+        <div class="parallax-overlay"></div>
+        <div class="city-detail-content">
+            <h2>CONSTANTINE</h2>
+            <p class="nickname">Cite des Ponts Suspendus</p>
+            <p>Perchee sur un plateau rocheux a 640m d'altitude, Constantine est l'une des plus anciennes cites continuellement habitees au monde. Ses ponts vertigineux enjambant les gorges du Rhumel offrent des panoramas a couper le souffle.</p>
+            <ul>
+                <li><span>🌉</span> Pont Sidi M'Cid - 175m de haut</li>
+                <li><span>🏛️</span> Palais Ahmed Bey - Architecture ottomane</li>
+                <li><span>🕌</span> Mosquee Emir Abdelkader</li>
+                <li><span>🎓</span> Capitale culturelle de l'Est</li>
+            </ul>
+        </div>
+    </section>
+
+    <footer>
+        <p>2024 Algerie Decouverte - Tous droits reserves</p>
+        <div class="algerian-flag">
+            <div class="flag-stripe flag-green"></div>
+            <div class="flag-stripe flag-white"><span class="flag-symbol">☪</span></div>
+            <div class="flag-stripe flag-green"></div>
+        </div>
+    </footer>
+
+    <script>
+        const isMobile = window.innerWidth <= 768;
+        const burger = document.getElementById('burger');
+        const navLinks = document.getElementById('navLinks');
+        const navbar = document.getElementById('navbar');
+
+        burger.addEventListener('click', () => {
+            burger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                burger.classList.remove('active');
+                navLinks.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 100);
+        });
+
+        // Parallax effects
+        const parallaxBgs = document.querySelectorAll('.parallax-bg');
+        window.addEventListener('scroll', () => {
+            if (!isMobile) {
+                parallaxBgs.forEach(bg => {
+                    const section = bg.parentElement;
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top < window.innerHeight && rect.bottom > 0) {
+                        const scrolled = window.pageYOffset - section.offsetTop;
+                        bg.style.transform = `translateY(${scrolled * 0.4}px)`;
+                    }
+                });
+            }
+        });
+
+        // Intersection Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.2 });
+
+        document.querySelectorAll('.section-title, .city-card, .city-detail-content').forEach(el => observer.observe(el));
+
+        document.querySelectorAll('.city-card').forEach((card, index) => {
+            card.style.transitionDelay = `${index * 0.15}s`;
+        });
+    </script>
+</body>
+</html>
