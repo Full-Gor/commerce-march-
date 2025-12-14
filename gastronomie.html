@@ -15,7 +15,7 @@
             transition: all 0.3s ease; background: rgba(0, 0, 0, 0);
         }
         nav.scrolled { background: rgba(0, 100, 60, 0.95); padding: 20px 60px; backdrop-filter: blur(10px); }
-        .logo { font-size: 28px; font-weight: 700; letter-spacing: 3px; background: linear-gradient(135deg, #00a86b, #fff, #d52b1e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .logo { font-size: 28px; font-weight: 700; letter-spacing: 3px; background: linear-gradient(135deg, #00a86b, #fff, #d52b1e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; }
         .nav-links { display: flex; gap: 40px; list-style: none; }
         .nav-links a { color: #fff; text-decoration: none; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; position: relative; transition: opacity 0.3s; }
         .nav-links a:hover { opacity: 0.7; }
@@ -46,15 +46,15 @@
 
         .section-title { text-align: center; font-size: clamp(35px, 5vw, 70px); font-weight: 200; letter-spacing: 5px; margin-bottom: 60px; opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
         .section-title.visible { opacity: 1; transform: translateY(0); }
-        .section-subtitle { text-align: center; font-size: 18px; letter-spacing: 2px; opacity: 0.7; margin-bottom: 80px; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.8; }
+        .section-subtitle { text-align: center; font-size: 18px; letter-spacing: 2px; opacity: 0.7; margin-bottom: 80px; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.8; padding: 0 20px; }
 
         /* Plats Section */
-        .plats-section { background: #0a0a0a; padding: 100px 60px; }
+        .plats-section { background: #0a0a0a; padding: 100px 60px; display: block; min-height: auto; }
         .category-title { font-size: 28px; font-weight: 300; letter-spacing: 4px; color: #00a86b; margin: 80px 0 40px; text-align: center; opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
         .category-title.visible { opacity: 1; transform: translateY(0); }
         .category-title:first-of-type { margin-top: 0; }
 
-        .dishes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 40px; max-width: 1400px; margin: 0 auto; }
+        .dishes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; max-width: 1400px; margin: 0 auto; }
 
         .dish-card { background: linear-gradient(145deg, #151515, #0a0a0a); border-radius: 25px; overflow: hidden; transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); border: 1px solid rgba(0, 168, 107, 0.2); opacity: 0; transform: translateY(40px); }
         .dish-card.visible { opacity: 1; transform: translateY(0); }
@@ -82,14 +82,14 @@
         .detail-content h2 { font-size: clamp(35px, 5vw, 55px); font-weight: 200; letter-spacing: 5px; margin-bottom: 30px; color: #00a86b; text-align: center; }
         .detail-content p { font-size: 18px; line-height: 2; text-align: center; margin-bottom: 40px; }
 
-        .couscous-types { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: 40px; }
+        .couscous-types { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; margin-top: 40px; }
         .couscous-type { background: rgba(0, 168, 107, 0.1); padding: 30px; border-radius: 15px; text-align: center; transition: all 0.3s ease; }
         .couscous-type:hover { background: rgba(0, 168, 107, 0.2); transform: translateY(-5px); }
         .couscous-type h4 { font-size: 20px; margin-bottom: 10px; color: #00a86b; }
         .couscous-type p { font-size: 14px; opacity: 0.8; }
 
         /* Patisseries Section */
-        #patisseries { background: linear-gradient(180deg, #0a0a0a 0%, #111 100%); padding: 100px 60px; }
+        #patisseries { background: linear-gradient(180deg, #0a0a0a 0%, #111 100%); padding: 100px 60px; display: block; min-height: auto; }
         #patisseries .parallax-bg { background-image: url('https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=80&w=2000'); opacity: 0.3; position: absolute; }
 
         footer { background: linear-gradient(180deg, #0a0a0a 0%, #000 100%); padding: 60px 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); }
@@ -100,22 +100,80 @@
         .flag-white { background: #fff; display: flex; align-items: center; justify-content: center; }
         .flag-symbol { color: #d52b1e; font-size: 18px; }
 
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .dishes-grid { grid-template-columns: repeat(2, 1fr); gap: 30px; }
+            .couscous-types { grid-template-columns: repeat(2, 1fr); }
+        }
+
         @media (max-width: 1024px) {
             nav { padding: 20px 40px; }
+            nav.scrolled { padding: 15px 40px; }
             .burger-menu { display: flex; }
-            .nav-links { position: fixed; top: 0; right: -100%; height: 100vh; width: 70%; max-width: 400px; background: rgba(0, 100, 60, 0.98); backdrop-filter: blur(20px); flex-direction: column; justify-content: center; align-items: center; gap: 40px; transition: right 0.4s ease; padding: 60px 40px; }
+            .nav-links {
+                position: fixed; top: 0; right: -100%; height: 100vh; width: 70%; max-width: 400px;
+                background: rgba(0, 100, 60, 0.98); backdrop-filter: blur(20px);
+                flex-direction: column; justify-content: center; align-items: center; gap: 40px;
+                transition: right 0.4s ease; padding: 60px 40px;
+            }
             .nav-links.active { right: 0; }
-            .dishes-grid { grid-template-columns: 1fr; }
+            .nav-links a { font-size: 18px; }
+            .plats-section, #patisseries { padding: 80px 40px; }
+            .dish-image { height: 240px; }
         }
 
         @media (max-width: 768px) {
             nav { padding: 15px 20px; }
-            .logo { font-size: 22px; }
+            nav.scrolled { padding: 12px 20px; }
+            .logo { font-size: 22px; letter-spacing: 2px; }
+            .nav-links { width: 100%; max-width: none; gap: 30px; }
             .plats-section, #patisseries { padding: 60px 20px; }
-            .dish-card { margin: 0 10px; }
+            .dishes-grid { grid-template-columns: 1fr; gap: 25px; }
+            .dish-card { margin: 0; }
+            .dish-image { height: 220px; }
             .dish-info { padding: 25px; }
+            .dish-info h3 { font-size: 22px; }
+            .dish-info p { font-size: 14px; margin-bottom: 15px; }
+            .ingredient { padding: 6px 12px; font-size: 12px; }
             .detail-content { padding: 30px 20px; margin: 20px; }
-            .couscous-types { grid-template-columns: 1fr; }
+            .detail-content p { font-size: 16px; }
+            .couscous-types { grid-template-columns: 1fr; gap: 15px; }
+            .couscous-type { padding: 20px; }
+            .couscous-type h4 { font-size: 18px; }
+            .section-title { margin-bottom: 40px; }
+            .section-subtitle { font-size: 16px; margin-bottom: 50px; }
+            .category-title { font-size: 24px; margin: 50px 0 30px; }
+        }
+
+        @media (max-width: 480px) {
+            nav { padding: 12px 15px; }
+            .logo { font-size: 20px; }
+            .hero-content { padding: 15px; }
+            .hero-content h1 { letter-spacing: 5px; }
+            .plats-section, #patisseries { padding: 50px 15px; }
+            .dish-image { height: 200px; }
+            .dish-info { padding: 20px; }
+            .dish-info h3 { font-size: 20px; }
+            .dish-badge { padding: 6px 12px; font-size: 11px; }
+            .ingredients { gap: 8px; }
+            .detail-content { padding: 25px 15px; margin: 15px; }
+            .detail-content h2 { letter-spacing: 3px; margin-bottom: 20px; }
+            .section-subtitle { font-size: 14px; line-height: 1.6; }
+            footer { padding: 40px 20px; }
+        }
+
+        /* Touch devices */
+        @media (hover: none) and (pointer: coarse) {
+            .dish-card:hover { transform: none; }
+            .dish-card:active { transform: scale(0.98); }
+            .couscous-type:hover { transform: none; }
+        }
+
+        /* Landscape mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            #hero { height: 100vh; }
+            .hero-content h1 { font-size: 40px; }
+            #couscous-detail { min-height: auto; padding: 80px 20px; }
         }
     </style>
 </head>
@@ -388,7 +446,7 @@
     </footer>
 
     <script>
-        const isMobile = window.innerWidth <= 768;
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         const burger = document.getElementById('burger');
         const navLinks = document.getElementById('navLinks');
         const navbar = document.getElementById('navbar');
@@ -411,10 +469,12 @@
             navbar.classList.toggle('scrolled', window.scrollY > 100);
         });
 
-        // Parallax effects
+        // Parallax effects with requestAnimationFrame
         const parallaxBgs = document.querySelectorAll('.parallax-bg');
-        window.addEventListener('scroll', () => {
-            if (!isMobile) {
+        let ticking = false;
+
+        function updateParallax() {
+            if (!isTouchDevice) {
                 parallaxBgs.forEach(bg => {
                     const section = bg.parentElement;
                     const rect = section.getBoundingClientRect();
@@ -424,6 +484,14 @@
                     }
                 });
             }
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(updateParallax);
+                ticking = true;
+            }
         });
 
         // Intersection Observer
@@ -431,12 +499,19 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) entry.target.classList.add('visible');
             });
-        }, { threshold: 0.15 });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
         document.querySelectorAll('.section-title, .category-title, .dish-card, .detail-content').forEach(el => observer.observe(el));
 
         document.querySelectorAll('.dish-card').forEach((card, index) => {
             card.style.transitionDelay = `${(index % 3) * 0.1}s`;
+        });
+
+        // Handle orientation change
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => {
+                window.scrollBy(0, 1);
+            }, 100);
         });
     </script>
 </body>
